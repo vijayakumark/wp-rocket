@@ -97,8 +97,7 @@ grunt.initConfig({
 // Default task.
 grunt.registerTask( 'default', 'exec:npmUpdate' );
 
-// Makepot task.
-grunt.registerTask( 'makepott', 'makepot' );
+// Makepot - grunt makepot
 
 // Makepot and push it on Transifex task(s).
 grunt.registerTask( 'makandpush', [ 'makepot', 'exec:txpush_s' ] );
