@@ -79,7 +79,7 @@ function get_rocket_parse_url( $url )
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
 	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
 	$query  = isset( $url['query'] ) ? $url['query'] : '';
-	return array( $host, $path, $scheme, $query );
+	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
 
 }
 
@@ -250,15 +250,14 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 
 			// Get tags for CSS file
 			if ( $ext == 'css' ) {
-				
-				$tags  .= '<link rel="stylesheet" href="' . apply_filters( 'rocket_css_url', $url ) . '" ' . $data_attr . '/>';
+
+				$tags .= sprintf( '<link rel="stylesheet" href="%s" %s/>', esc_attr( apply_filters( 'rocket_css_url', $url ) ), $data_attr );
 
 			}
-
 			// Get tags for JS file
-			if ( $ext == 'js' ) {
+			elseif ( $ext == 'js' ) {
 
-				$tags  .= '<script src="' . apply_filters( 'rocket_js_url', $url ) . '" ' . $data_attr . '></script>';
+				$tags .= sprintf( '<script src="%s" %s></script>', esc_attr( apply_filters( 'rocket_js_url', $url ) ), $data_attr );
 
 			}
 
