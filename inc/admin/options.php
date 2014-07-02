@@ -976,6 +976,27 @@ function rocket_display_options()
 	);
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
+    add_settings_field(
+		'rocket_do_beta',
+		__( 'Beta Tester', 'rocket' ),
+		'rocket_field',
+		'tools',
+		'rocket_display_tools',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'label'        => __( 'Yes i want!', 'rocket' ),
+				'label_for'    => 'do_beta',
+				'label_screen' => __( 'Beta Tester', 'rocket' )
+			),
+			array(
+				'type' 		  => 'helper_description',
+				'name' 		  => 'do_beta',
+				'description' => __( 'Check it to participate to the WP Rocket Beta Program and get the new versions earlier, thanks in advance.', 'rocket' )
+			)
+		)
+    );
+
 	add_settings_field(
 		'rocket_purge_all',
 		__( 'Clear cache', 'rocket' ),
@@ -1480,7 +1501,7 @@ function rocket_settings_callback( $inputs )
 	}
 
 	if ( isset( $_FILES['import'] )
-		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.dat/', $_FILES['import']['name'] )
+		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] )
 	{
 		$file_name 			= $_FILES['import']['name'];
@@ -1556,7 +1577,7 @@ function rocket_after_save_options( $oldvalue, $value )
 	// If it's different, clean the domain
 	if ( md5( serialize( $oldvalue_diff ) ) !== md5( serialize( $oldvalue_diff ) ) ) { // !== ant not != because type juggling possible!
 		// Check if a plugin translation is activated
-		if ( rocket_has_translation_plugin_active() ) {
+		if ( rocket_has_i18n() ) {
 			// Purge all cache files
 			rocket_clean_domain_for_all_langs();
 		} else {
