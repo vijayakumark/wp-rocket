@@ -15,6 +15,7 @@ grunt.initConfig({
           mainFile: 'wp-rocket.php',    // Main project file.
           potFilename: 'rocket.pot',    // Name of the POT file.
           type: 'wp-plugin',    // Type of project (wp-plugin or wp-theme).
+          updateTimestamp: true,    // Whether the POT-Creation-Date should be updated without other changes.
           processPot: function( pot, options ) {
             pot.headers['report-msgid-bugs-to'] = 'http://wp-rocket.me/';
             pot.headers['plural-forms'] = 'nplurals=2; plural=n != 1;';
@@ -33,9 +34,6 @@ grunt.initConfig({
     },
 
     exec: {
-      npmUpdate: {
-        command: 'npm update'
-      },
       txpull: { // Pull Transifex translation - grunt exec:txpull
         cmd: 'tx pull -a --minimum-perc=100' // Change the percentage with --minimum-perc=yourvalue
       },
