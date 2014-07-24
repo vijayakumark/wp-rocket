@@ -203,9 +203,9 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	}
 	unset( $line );
 
-	// If the constant does not exist, it is created
+	// If the constant does not exist, create it
 	if ( ! $is_wp_cache_exist ) {
-		array_shift($config_file);
+		array_shift( $config_file );
 		array_unshift( $config_file, "<?php\r\n", $constant);
 	}
 
@@ -623,7 +623,7 @@ function rocket_find_wpconfig_path()
 
 	if ( file_exists( $config_file ) && is_writable( $config_file ) ) {
 		return $config_file;
-	} elseif ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) {
+	} elseif ( @file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) {
 		return $config_file_alt;
 	}
 
