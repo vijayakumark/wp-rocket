@@ -1072,7 +1072,7 @@ function rocket_display_options()
 		'tutorials',
 		'rocket_display_tutorials',
 		array(
-			'description'	=> __( 'This video helps to set up the 2 functions <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>.', 'rocket' ),
+			'description'	=> __( 'This video helps to set up the two functions <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>.', 'rocket' ),
 			'url'			=> 'http://www.youtube.com/embed/qfcGBoVdYKI',
 			'name'			=> 'tuto_cdn_api',
 		)
