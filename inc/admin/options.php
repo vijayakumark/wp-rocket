@@ -10,7 +10,7 @@ add_action( 'admin_menu', 'rocket_admin_menu' );
 function rocket_admin_menu()
 {
 	// do not use WP_ROCKET_PLUGIN_NAME here because if the WL has just been activated, the constant is not correct yet
-	$wl_plugin_name = get_rocket_option( 'wl_plugin_name' );
+	$wl_plugin_name = get_rocket_option( 'wl_plugin_name', WP_ROCKET_PLUGIN_NAME );
 
 	// same with WP_ROCKET_PLUGIN_SLUG
 	$wl_plugin_slug = sanitize_key( $wl_plugin_name );
@@ -35,13 +35,13 @@ function rocket_field( $args )
 		if ( isset( $args['display'] ) && !$args['display'] ) {
 			continue;
 		}
-		$args['label_for'] = isset( $args['label_for'] ) ? $args['label_for'] : '';
-		$args['name'] 	= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$class			= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
-		$placeholder 	= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
-		$label 			= isset( $args['label'] ) ? $args['label'] : '';
-		$default		= isset( $args['default'] ) ? $args['default'] : '';
-		$readonly		= isset( $args['readonly'] ) ? ' readonly="readonly"' : '';
+		$args['label_for'] 	= isset( $args['label_for'] ) ? $args['label_for'] : '';
+		$args['name'] 		= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
+		$class				= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
+		$placeholder 		= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
+		$label 				= isset( $args['label'] ) ? $args['label'] : '';
+		$default			= isset( $args['default'] ) ? $args['default'] : '';
+		$readonly			= isset( $args['readonly'] ) ? ' readonly="readonly"' : '';
 
 		if( ! isset( $args['fieldset'] ) || 'start' == $args['fieldset'] ){
 			echo '<fieldset class="fieldname-'.sanitize_html_class( $args['name'] ).' fieldtype-'.sanitize_html_class( $args['type'] ).'">';
@@ -51,12 +51,12 @@ function rocket_field( $args )
 			case 'number' :
 			case 'email' :
 			case 'text' :
-				
+
 				$value = esc_attr( get_rocket_option( $args['name'] ) );
 				if ( $value === false ) {
 					$value = $default;
 				}
-				
+
 				$number_options = $args['type']=='number' ? ' min="0" class="small-text"' : '';
 				$autocomplete = in_array( $args['name'], array( 'consumer_key', 'consumer_email' ) ) ? ' autocomplete="off"' : '';
 				$disabled = ( 'consumer_key' == $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' == $args['name'] && defined( 'WP_ROCKET_EMAIL' ) ) ? ' disabled="disabled"' : '';
@@ -516,7 +516,7 @@ function rocket_display_options()
 				'display'		=> ! rocket_is_white_label(),
 				'type'			=> 'helper_warning',
 				'name'			=> 'minify_help2',
-				'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/5-Llh0ivyjs' )
+				'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/5-Llh0ivyjs' : 'http://www.youtube.com/embed/kymoxCwW03c' )
 			),
 
 		)
@@ -600,8 +600,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_description',
 				'name'         => 'purge',
-				'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' .
-									  __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
+				'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' . __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
 				),
 			array(
 				'type'         => 'helper_help',
@@ -628,14 +627,13 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_description',
 				'name'         => 'dns_prefetch',
-				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' ) . '<br/>' .
-									  __( 'This mechanism reduces the latency of some external files.', 'rocket' ),
+				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the latency of some external files.', 'rocket' ),
 				),
 			array(
 				'display'      => ! rocket_is_white_label(),
 				'type'         => 'helper_help',
 				'name'         => 'dns_prefetch',
-				'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/ElJCtUidLwc' ),
+				'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/ElJCtUidLwc' : 'http://www.youtube.com/embed/jKMU6HgMMrA' ),
 				),
 			array(
 				'type'         => 'helper_help',
@@ -928,26 +926,29 @@ function rocket_display_options()
 	);
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
-    add_settings_field(
-		'rocket_do_beta',
-		__( 'Beta Tester', 'rocket' ),
-		'rocket_field',
-		'tools',
-		'rocket_display_tools',
-		array(
+
+    if ( false == rocket_is_white_label() ) {
+		add_settings_field(
+			'rocket_do_beta',
+			__( 'Beta Tester', 'rocket' ),
+			'rocket_field',
+			'tools',
+			'rocket_display_tools',
 			array(
-				'type'         => 'checkbox',
-				'label'        => __( 'Yes I do!', 'rocket' ),
-				'label_for'    => 'do_beta',
-				'label_screen' => __( 'Beta Tester', 'rocket' )
-			),
-			array(
-				'type' 		  => 'helper_description',
-				'name' 		  => 'do_beta',
-				'description' => __( 'Check it to participate in the WP Rocket Beta Program and get earlier access to new versions, thanks in advance.', 'rocket' )
+				array(
+					'type'         => 'checkbox',
+					'label'        => __( 'Yes I do!', 'rocket' ),
+					'label_for'    => 'do_beta',
+					'label_screen' => __( 'Beta Tester', 'rocket' )
+				),
+				array(
+					'type' 		  => 'helper_description',
+					'name' 		  => 'do_beta',
+					'description' => __( 'Check it to participate in the WP Rocket Beta Program and get earlier access to new versions, thanks in advance.', 'rocket' )
+				)
 			)
-		)
-    );
+	    );
+    }
 
 	add_settings_field(
 		'rocket_purge_all',
@@ -1098,7 +1099,7 @@ function rocket_display_options()
 		array(
 				'button'=>array(
 					'button_label'	=> __( 'Visit the Support', 'rocket' ),
-					'url'			=> 'http://support.wp-rocket.me/',
+					'url'			=> 'http://wp-rocket.me/support/',
 					'style'			=> 'link',
 					),
 				'helper_help'=>array(
@@ -1111,7 +1112,7 @@ function rocket_display_options()
 	<div class="wrap">
 
 	<h2><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></h2>
-	<form action="options.php" method="post" enctype="multipart/form-data">
+	<form action="options.php" id="rocket_options" method="post" enctype="multipart/form-data">
 		<?php settings_fields( 'wp_rocket' ); ?>
 		<?php rocket_hidden_fields( array( 'consumer_key', 'consumer_email', 'secret_key', 'license', 'secret_cache_key', 'minify_css_key', 'minify_js_key', 'version' ) ); ?>
 		<?php submit_button(); ?>
@@ -1207,6 +1208,7 @@ function rocket_sanitize_js( $file )
  */
 function rocket_settings_callback( $inputs )
 {
+
 	if ( isset( $_GET['action'] ) && 'purge_cache' == $_GET['action'] ) {
 		return $inputs;
 	}
@@ -1434,7 +1436,6 @@ function rocket_settings_callback( $inputs )
 
 	if ( rocket_valid_key() && ! empty( $inputs['secret_key'] ) && ! isset( $inputs['ignore'] ) ) {
 		unset( $inputs['ignore'] );
-		add_settings_error( 'general', 'settings_updated', rocket_warning_logged_users(), 'updated' );
 		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.' ), 'updated' );
 	}
 
@@ -1456,6 +1457,7 @@ function rocket_settings_callback( $inputs )
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
 function rocket_after_save_options( $oldvalue, $value )
 {
+
 	// This values do not need to clean the cache domain
 	$removed = array( 'purge_cron_interval' => true, 'purge_cron_unit' => true, 'wl_plugin_name' => true, 'wl_plugin_URI' => true, 'wl_author' => true, 'wl_author_URI' => true, 'wl_description' => true, 'wl_plugin_slug' => true );
 
@@ -1505,7 +1507,7 @@ function rocket_after_save_options( $oldvalue, $value )
  *
  * @since 1.0
  */
-add_filter( 'pre_update_option_'.WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
+add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
 function rocket_pre_main_option( $newvalue, $oldvalue )
 {
 	if ( ( $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || ( $newvalue['purge_cron_unit'] != $oldvalue['purge_cron_unit'] ) ) {
