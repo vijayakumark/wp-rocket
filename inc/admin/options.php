@@ -1261,7 +1261,7 @@ function rocket_sanitize_css( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext=='css' ? $file : false;
+	return $ext=='css' ? trim( $file ) : false;
 }
 
 /**
@@ -1273,7 +1273,7 @@ function rocket_sanitize_js( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext == 'js' ? $file : false;
+	return $ext == 'js' ? trim( $file ) : false;
 }
 
 /**
@@ -1461,6 +1461,13 @@ function rocket_settings_callback( $inputs )
 	$inputs['wl_author_URI']  = isset( $inputs['wl_author_URI'] )  ? esc_url( $inputs['wl_author_URI'] )            : get_rocket_option( 'wl_author_URI' );
 	$inputs['wl_description'] = isset( $inputs['wl_description'] ) ? (array)$inputs['wl_description']               : get_rocket_option( 'wl_description' );
 	$inputs['wl_plugin_slug'] = sanitize_key( $inputs['wl_plugin_name'] );
+
+	/*
+	 * Autoupdate
+	 */
+	if ( isset( $inputs['autoupdate'] ) && 1 == $inputs['autoupdate'] ) {
+		rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
+	}
 
 	/*
 	 * Option : CDN
