@@ -772,7 +772,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'exclude_css',
-				'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' )
+				'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
 				),
 		)
 	);
@@ -791,7 +791,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'exclude_js',
-				'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' )
+				'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
 				),
 		)
 	);
@@ -949,13 +949,13 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_purge_cloudflare',
-		__( 'Cache Purge', 'rocket' ),
+		__( 'Clear Cache', 'rocket' ),
 		'rocket_button',
 		'cloudflare',
 		'rocket_display_cloudflare_options',
 		array(
 			'button'=>array(
-				'button_label' => __( 'Purge cache', 'rocket' ),
+				'button_label' => __( 'Clear Cache', 'rocket' ),
 				'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_cloudflare' ), 'rocket_purge_cloudflare' ),
 			),
 			'helper_description'=>array(
@@ -969,7 +969,7 @@ function rocket_display_options()
 	add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'cdn' );
 	add_settings_field(
 		'rocket_do_cloudflare',
-		__( 'Cloudflare', 'rocket' ),
+		'CloudFlare',
 		'rocket_field',
 		'cdn',
 		'rocket_display_cdn_options',
@@ -981,7 +981,7 @@ function rocket_display_options()
 									__( 'Enable CloudFlare settings tab.', 'rocket' ) :
 									'<span class="rkt-disabled">' . __( 'Enable CloudFlare settings tab.', 'rocket' ) . '</span>',
 				'label_for'    => 'do_cloudflare',
-				'label_screen' => __( 'Cloudflare', 'rocket' )
+				'label_screen' => 'CloudFlare'
 			),
 			array(
 				'type' 		  => ! rocket_has_cloudflare() ? '' : 'helper_description',
@@ -1022,7 +1022,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_cdn_on_ssl',
-		__( 'CDN & SSL:', 'rocket' ),
+		'CDN & SSL:',
 		'rocket_field',
 		'cdn',
 		'rocket_display_cdn_options',
@@ -1031,7 +1031,7 @@ function rocket_display_options()
 				'type'         => 'checkbox',
 				'label'        => __('Disable CDN on HTTPS pages.', 'rocket' ),
 				'label_for'    => 'cdn_ssl',
-				'label_screen' => __( 'CDN & SSL:', 'rocket' ),
+				'label_screen' => 'CDN & SSL:',
 			)
 		)
 	);
@@ -1381,7 +1381,7 @@ function rocket_display_options()
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
 				<?php if ( get_rocket_option( 'do_cloudflare' ) && rocket_has_cloudflare() ) { ?>
-					<a href="#tab_cloudflare" class="nav-tab"><?php _e( 'CloudFlare', 'rocket' ); ?></a>
+					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
 				<?php if( defined( 'WP_RWL' ) ) { ?>
@@ -1667,7 +1667,7 @@ function rocket_settings_callback( $inputs )
 	$inputs['wl_author_URI']  = isset( $inputs['wl_author_URI'] )  ? esc_url( $inputs['wl_author_URI'] )            : get_rocket_option( 'wl_author_URI' );
 	$inputs['wl_description'] = isset( $inputs['wl_description'] ) ? (array)$inputs['wl_description']               : get_rocket_option( 'wl_description' );
 	$inputs['wl_plugin_slug'] = sanitize_key( $inputs['wl_plugin_name'] );
-
+	
 	/*
 	 * Option : CDN
 	 */
@@ -1746,7 +1746,7 @@ function rocket_settings_callback( $inputs )
 
 	if ( rocket_valid_key() && ! empty( $inputs['secret_key'] ) && ! isset( $inputs['ignore'] ) ) {
 		unset( $inputs['ignore'] );
-		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.' ), 'updated' );
+		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
 	}
 
 	return $inputs;
@@ -1830,7 +1830,7 @@ function rocket_after_save_options( $oldvalue, $value )
 	if ( ! empty( $_POST ) && $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
 		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket' == $_POST['option_page'] && 'update' == $_POST['action'] )
 	{
-		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.' ), 'updated' );
+		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		wp_redirect( admin_url( 'options-general.php?page=' . sanitize_key( $value['wl_plugin_name'] ) . '&settings-updated=true' ) );
 		die();
@@ -1894,7 +1894,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
  * @since 2.2
  */
 function rocket_import_upload_form() {
-
 	/**
 	 * Filter the maximum allowed upload size for import files.
 	 *
@@ -1908,14 +1907,14 @@ function rocket_import_upload_form() {
 	$size = size_format( $bytes );
 	$upload_dir = wp_upload_dir();
 	if ( ! empty( $upload_dir['error'] ) ) {
-		?><div class="error"><p><?php _e('Before you can upload your import file, you will need to fix the following error:'); ?></p>
+		?><div class="error"><p><?php _e( 'Before you can upload your import file, you will need to fix the following error:', 'rocket' ); ?></p>
 		<p><strong><?php echo $upload_dir['error']; ?></strong></p></div><?php
-	}else{
+	} else {
 		?>
 		<p>
 		<input type="file" id="upload" name="import" size="25" />
 		<br />
-		<label for="upload"><?php echo apply_filters( 'rocket_help', __( 'Choose a file from your computer:' ) . ' (' . sprintf( __('Maximum size: %s' ), $size ) . ')', 'upload', 'help' ); ?></label>
+		<label for="upload"><?php echo apply_filters( 'rocket_help', __( 'Choose a file from your computer:', 'rocket' ) . ' (' . sprintf( __( 'Maximum size: %s', 'rocket' ), $size ) . ')', 'upload', 'help' ); ?></label>
 		<input type="hidden" name="max_file_size" value="<?php echo $bytes; ?>" />
 		</p>
 		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
