@@ -98,12 +98,12 @@ function __rocket_add_admin_css_js()
 
 	wp_enqueue_style( 'options-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'options.css', array(), WP_ROCKET_VERSION );
 	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
-	
+
 	// Sweet Alert
 	$translation_array = array(
 		'warning_title'  	 => __( 'Are you sure?', 'rocket' ),
 		'cloudflare_title'   => __( 'CloudFlare Settings', 'rocket' ),
-		'minify_text'  		 => sprintf( __( 'In case of any display errors we recommend following our documentation: %s You can also contact our support if you need help implementing that.', 'rocket' ), 'http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/' ),
+		'minify_text'  		 => __( 'In case of any display errors we recommend following our documentation: ', 'rocket' ) . '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving Issues with Minification</a>.<br/><br/>' . sprintf(  __( 'You can also <a href="%s">contact our support</a> if you need help implementing that.', 'rocket' ), 'http://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' ),
 		'cloudflare_text'    => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
 		'confirmButtonText'  => __( 'Yes, I\'m sure!', 'rocket' ),
 		'cancelButtonText' 	 => __( 'Cancel', 'rocket' )
@@ -361,13 +361,14 @@ function __rocket_rollback()
  */
 add_action( 'add_meta_boxes', '__rocket_cache_options_meta_boxes' );
 function __rocket_cache_options_meta_boxes() {
-	$cpts = get_post_types( array( 'public'=>true ), 'objects' );
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		$cpts = get_post_types( array( 'public'=>true ), 'objects' );
 
-	foreach( $cpts as $cpt => $cpt_object ) {
-		$label = $cpt_object->labels->singular_name;
-		add_meta_box( 'rocket_post_exclude', sprintf( __( 'Cache Options', 'rocket' ), $label ), '__rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );
+		foreach( $cpts as $cpt => $cpt_object ) {
+			$label = $cpt_object->labels->singular_name;
+			add_meta_box( 'rocket_post_exclude', sprintf( __( 'Cache Options', 'rocket' ), $label ), '__rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );
+		}
 	}
-
 }
 
 /*
@@ -379,7 +380,7 @@ function __rocket_display_cache_options_meta_boxes() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		global $post;
-		wp_nonce_field( 'rocket_box_option_' . $post->ID, '_rocketnonce', false, true );
+		wp_nonce_field( 'rocket_box_option', '_rocketnonce', false, true );
 		?>
 
 		<div class="misc-pub-section">
@@ -422,9 +423,10 @@ function __rocket_display_cache_options_meta_boxes() {
  */
 add_action( 'save_post', '__rocket_save_metabox_options' );
 function __rocket_save_metabox_options() {
-	if ( isset( $_POST['post_ID'], $_POST['rocket_post_exclude_hidden'], $_POST['_rocketnonce'] ) ) {
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
+		isset( $_POST['post_ID'], $_POST['rocket_post_exclude_hidden'], $_POST['_rocketnonce'] ) ) {
 
-		check_admin_referer( 'rocket_box_option_' . $_POST['post_ID'], '_rocketnonce' );
+		check_admin_referer( 'rocket_box_option', '_rocketnonce' );
 
 		$fields = array( 'lazyload', 'minify_html', 'minify_css', 'minify_js', 'cdn' );
 
@@ -440,4 +442,26 @@ function __rocket_save_metabox_options() {
 			}
 		}
 	}
+}
+
+/*
+ * Create cache folders if not exists.
+ *
+ * @since 2.5.5
+ */
+add_action( 'admin_init', '__rocket_maybe_create_cache_folders' );
+function __rocket_maybe_create_cache_folders() {
+	if ( defined( 'DOING_AJAX' ) || defined( 'DOING_AUTOSAVE' ) ) {
+		return;
+	}
+	
+	// Create cache folder if not exist
+    if ( ! is_dir( WP_ROCKET_CACHE_PATH ) ) {
+	   rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
+    }
+
+	// Create minify cache folder if not exist
+    if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
+		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
+    }
 }
