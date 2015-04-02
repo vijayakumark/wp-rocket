@@ -66,7 +66,7 @@ grunt.initConfig({
 					'esc_attr_e:1,2d',
 					'esc_attr_x:1,2c,3d',
 					'_ex:1,2c,3d',
-					'_n:1,2,3d',
+					'_n:1,2,4d',
 					'_nx:1,2,4c,5d',
 					'_n_noop:1,2,3d',
 					'_nx_noop:1,2,3c,4d',
@@ -88,7 +88,7 @@ grunt.initConfig({
 
 		exec: {
 			txpull: { // Pull Transifex translation - grunt exec:txpull
-				cmd: 'tx pull -a --minimum-perc=89' // Change the percentage with --minimum-perc=yourvalue
+				cmd: 'tx pull -a  -f --minimum-perc=89' // Change the percentage with --minimum-perc=yourvalue
 			},
 			txpush_s: { // Push pot to Transifex - grunt exec:txpush_s
 				cmd: 'tx push -s'
