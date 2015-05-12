@@ -18,7 +18,7 @@ function rocket_cdn_file( $url )
 {
 	$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
-	if ( is_admin() && $ext != 'php' ) {
+	if ( is_admin() || $ext == 'php' ) {
 		return $url;
 	}
 
@@ -52,7 +52,7 @@ function rocket_cdn_file( $url )
  * @since 2.1
  */
 add_filter( 'the_content', 'rocket_cdn_images', PHP_INT_MAX );
-add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );	
+add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );
 add_filter( 'rocket_buffer', 'rocket_cdn_images', PHP_INT_MAX );
 function rocket_cdn_images( $html )
 {
@@ -64,19 +64,19 @@ function rocket_cdn_images( $html )
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 		// Get all images of the content
-		preg_match_all( '#<img([^>]*) src=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))([^>]*)>#i', $html, $images_match );
-		
+		preg_match_all( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#i', $html, $images_match );
+
 		foreach ( $images_match[2] as $k=>$image_url ) {
 			// Check if the link isn't external
-			if( parse_url( rocket_add_url_protocol( $image_url ), PHP_URL_HOST ) != parse_url( home_url(), PHP_URL_HOST ) ) {
+			if( parse_url( set_url_scheme( $image_url ), PHP_URL_HOST ) != parse_url( home_url(), PHP_URL_HOST ) ) {
 				continue;
 			}
-			
+
 			// Check if the URL isn't a DATA-URI
 			if( false !== strpos( $image_url, 'data:image' ) ) {
 				continue;
 			}
-			
+
 			$html = str_replace(
 				$images_match[0][$k],
 				/**
@@ -88,15 +88,15 @@ function rocket_cdn_images( $html )
 				*/
 				apply_filters( 'rocket_cdn_images_html', sprintf(
 					'<img %1$s %2$s %3$s>',
-					$images_match[1][$k],
+					trim($images_match[1][$k]),
 					'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
-					$images_match[3][$k]
+					trim($images_match[3][$k])
 				)),
 				$html
 			);
 		}
 	}
-		
+
 	return $html;
 }
 
@@ -114,6 +114,7 @@ function rocket_cdn_enqueue( $src )
 		return $src;
 	}
 
+	$src  = set_url_scheme( $src );
 	$zone = array( 'all', 'css_and_js' );
 
 	// Add only CSS zone
@@ -127,7 +128,7 @@ function rocket_cdn_enqueue( $src )
 	}
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-		list( $src_host, $src_path ) = get_rocket_parse_url( set_url_scheme( $src ) );
+		list( $src_host, $src_path ) = get_rocket_parse_url( $src );
 		// Check if the link isn't external
 		if ( $src_host == parse_url( home_url(), PHP_URL_HOST ) && trim( $src_path, '/' ) != '' ) {
 			$src = get_rocket_cdn_url( $src, $zone );
