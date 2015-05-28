@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the WP Rocket package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 2.6-beta5\n"
+"Project-Id-Version: WP Rocket 2.6-beta6\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-05-20 14:23:29+00:00\n"
+"POT-Creation-Date: 2015-05-28 16:16:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -193,7 +193,7 @@ msgstr ""
 
 #: inc/admin/ui/enqueue.php:37
 msgid ""
-"You have to read the <a href=\"\" target=\"_blank\">documentation</a> and "
+"You have to read the <a href=\"%s\" target=\"_blank\">documentation</a> and "
 "to agree to send informations relative to your website to submit a support "
 "ticket."
 msgstr ""
