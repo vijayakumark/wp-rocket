@@ -124,6 +124,26 @@ add_settings_field(
 	)
 );
 add_settings_field(
+	'rocket_feed',
+	__( 'Feed cache:', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
+		array(
+			'type'		   => 'checkbox',
+			'label'		   => __( 'Enable caching for default WordPress feeds.', 'rocket' ),
+			'label_for'	   => 'cache_feed',
+			'label_screen' => __( 'Feed cache:', 'rocket' ),
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'feed',
+			'description'  => __( 'Enabling this option will allow caching of all WordPress default feeds', 'rocket' ),
+		),
+	)
+);
+add_settings_field(
 	'rocket_logged_user',
 	__( 'Logged in user cache:', 'rocket' ),
 	'rocket_field', 'rocket_basic',
