@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
   *
   * @param bool true will force the Varnish purge
  */
-if ( apply_filters( 'do_rocket_varnish_http_purge', false ) ) :
+if ( apply_filters( 'do_rocket_varnish_http_purge', false ) || get_rocket_option( 'varnish_auto_purge', 0 ) ) :
 
 /**
  * Purge all the domain
@@ -42,6 +42,16 @@ function __rocket_varnish_clean_home( $root, $lang ) {
 	
 	rocket_varnish_http_purge( $home_url );	
 	rocket_varnish_http_purge( $home_pagination_url );
+}
+
+/**
+ * Don't generate WP Rocket caching files
+ *
+ * @since 2.7
+*/
+add_filter( 'do_rocket_generate_caching_files', '__rocket_varnish_generate_caching_files', 0 );
+function __rocket_varnish_generate_caching_files() {
+	return ! get_rocket_option( 'do_caching_files', 0 );
 }
 
 endif;
