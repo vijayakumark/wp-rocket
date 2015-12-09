@@ -449,6 +449,22 @@ function rocket_clean_home( $lang = '' )
 }
 
 /**
+ * Remove the home cache feed
+ *
+ * @since 2.7
+ *
+ * @return void
+ */
+function rocket_clean_home_feeds()
+{
+    $urls = array();
+	$urls[] = get_feed_link( $feed_type );
+	$urls[] = get_feed_link( 'comments_' );
+
+    rocket_clean_files( $urls );
+}
+
+/**
  * Remove all cache files of the domain
  *
  * @since 2.0 Delete domain cache files for all users
