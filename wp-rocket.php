@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.6.13
+Version: 2.7
 Code Name: Yavin
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
@@ -19,7 +19,7 @@ Copyright 2013-2015 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.6.13' );
+define( 'WP_ROCKET_VERSION'             , '2.7' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -61,7 +61,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.5.12' );
+    define( 'WP_ROCKET_LASTVERSION', '2.6.13' );
 }
 
 require( WP_ROCKET_INC_PATH	. 'compat.php' );
@@ -145,6 +145,7 @@ function rocket_init()
         require( WP_ROCKET_ADMIN_UI_PATH . 'notices.php' );
         require( WP_ROCKET_ADMIN_UI_PATH . 'meta-boxes.php' );
     } else if ( rocket_valid_key() ) {
+        require( WP_ROCKET_FRONT_PATH . 'cache.php' );
         require( WP_ROCKET_FRONT_PATH . 'minify.php' );
         require( WP_ROCKET_FRONT_PATH . 'cookie.php' );
         require( WP_ROCKET_FRONT_PATH . 'images.php' );

@@ -44,14 +44,4 @@ function __rocket_varnish_clean_home( $root, $lang ) {
 	rocket_varnish_http_purge( $home_pagination_url );
 }
 
-/**
- * Don't generate WP Rocket caching files
- *
- * @since 2.7
-*/
-add_filter( 'do_rocket_generate_caching_files', '__rocket_varnish_generate_caching_files', 0 );
-function __rocket_varnish_generate_caching_files() {
-	return ! get_rocket_option( 'do_caching_files', 0 );
-}
-
 endif;
