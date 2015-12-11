@@ -415,19 +415,19 @@ function __rocket_purge_cache()
  *
  * @since 2.7
  */
-add_action( 'admin_post_purge_opcache', '__rocket_purge_opcache' );
-function __rocket_purge_opcache()
+add_action( 'admin_post_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
+function do_admin_post_rocket_purge_opcache()
 {
-    if ( isset( $_GET['_wpnonce'] ) ) {
-        if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'purge_opcache' ) ) {
-            wp_nonce_ays( '' );
-        }
-
-        opcache_reset();
-
-        wp_redirect( wp_get_referer() );
-        die();
+    if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'purge_opcache' ) ) {
+        wp_nonce_ays( '' );
     }
+
+    if ( function_exists( 'opcache_reset' ) ) {
+        opcache_reset();
+    }
+
+    wp_redirect( wp_get_referer() );
+    die();
 }
 
 /**
