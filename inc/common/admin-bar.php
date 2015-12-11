@@ -133,7 +133,7 @@ function rocket_admin_bar( $wp_admin_bar )
         // Purge OPCache cache content if OPcache is active
         if ( function_exists( 'opcache_reset' ) ) {
 
-            $action = 'purge_opcache';
+            $action = 'rocket_purge_opcache';
 
             $wp_admin_bar->add_menu( array(
 				'parent' => 'wp-rocket',
