@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-12-09 15:59-0500\n"
-"PO-Revision-Date: 2015-12-09 15:59-0500\n"
+"POT-Creation-Date: 2015-12-18 12:06-0500\n"
+"PO-Revision-Date: 2015-12-18 12:06-0500\n"
 "Last-Translator: Rémy Perona <remperona@gmail.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/wp-"
 "rocket/language/fr_FR/)\n"
@@ -677,12 +677,11 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:128 inc/admin/ui/modules/basic.php:137
 msgid "Feed cache:"
-msgstr "Cache des flux RSS:"
+msgstr "Cache des flux RSS :"
 
 #: inc/admin/ui/modules/basic.php:135
-msgid "Enable caching for default WordPress feeds."
-msgstr ""
-"Activer la mise en cache pour tous les flux RSS par défaut de WordPress."
+msgid "Enable caching for WordPress feeds."
+msgstr "Activer la mise en cache pour les flux RSS de WordPress."
 
 #: inc/admin/ui/modules/basic.php:143 inc/admin/ui/modules/basic.php:150
 msgid "Logged in user cache:"
@@ -1348,19 +1347,19 @@ msgstr ""
 "Pour finaliser l'installation et profiter des performances apportées par "
 "notre extension, merci de <a href=\"%s\">renseigner votre clé API</a>"
 
-#: inc/functions/options.php:476
+#: inc/functions/options.php:475
 msgid "Your license is not valid."
 msgstr "Votre license n'est pas correcte."
 
-#: inc/functions/options.php:477
+#: inc/functions/options.php:476
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Vous ne pouvez plus ajouter de sites. Mettez à niveau votre compte."
 
-#: inc/functions/options.php:478
+#: inc/functions/options.php:477
 msgid "This website is not allowed."
 msgstr "Ce site n'est pas autorisé."
 
-#: inc/functions/options.php:479
+#: inc/functions/options.php:478
 msgid "This license key is not accepted."
 msgstr "Cette clé n'est pas acceptée."
 

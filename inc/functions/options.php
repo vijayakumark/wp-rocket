@@ -67,8 +67,7 @@ function is_rocket_post_excluded_option( $option ) {
  *
  * @return bool True if option is activated
  */
-function is_rocket_cache_feed()
-{
+function is_rocket_cache_feed() {
 	return get_rocket_option( 'cache_feed', false );
 }
 

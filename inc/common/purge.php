@@ -205,7 +205,7 @@ function rocket_clean_post( $post_id )
 	rocket_clean_home( $lang );
 
     // Purge home feeds (blog & comments)
-    rocket_clean_home_feeds( $lang );
+    rocket_clean_home_feeds();
 
 	// Purge all parents
 	$parents = get_post_ancestors( $post_id );

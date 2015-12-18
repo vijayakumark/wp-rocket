@@ -132,7 +132,7 @@ add_settings_field(
 	array(
 		array(
 			'type'		   => 'checkbox',
-			'label'		   => __( 'Enable caching for default WordPress feeds.', 'rocket' ),
+			'label'		   => __( 'Enable caching for WordPress feeds.', 'rocket' ),
 			'label_for'	   => 'cache_feed',
 			'label_screen' => __( 'Feed cache:', 'rocket' ),
 		)
