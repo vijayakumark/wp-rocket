@@ -69,10 +69,10 @@ function rocket_generate_advanced_cache_file()
  *
  * @return array Names of all config files & The content that will be printed
  */
-function get_rocket_config_file()
-{
+function get_rocket_config_file() {
 	$options = get_option( WP_ROCKET_SLUG );
-	if( ! $options ) {
+	
+	if ( ! $options ) {
 		return;
 	}
 
@@ -86,8 +86,7 @@ function get_rocket_config_file()
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {
-
-		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'secret_cache_key' ) {
+		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'do_caching_mobile_files' || $option == 'secret_cache_key' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
 
