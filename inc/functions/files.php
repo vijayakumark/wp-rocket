@@ -431,7 +431,7 @@ function rocket_clean_home( $lang = '' )
 	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage
-	if ( $files = glob( $root . '/{index,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
+	if ( $files = glob( $root . '/{index,index-mobile,index-mobile-https,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
 		foreach ( $files as $file ) { // no array map to use @
 			@unlink( $file );
 		}
