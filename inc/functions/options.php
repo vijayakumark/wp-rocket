@@ -73,6 +73,17 @@ function is_rocket_cache_mobile()
 }
 
 /**
+ * Check if we need to generate a different caching file for mobile (if available)
+ *
+ * @since 2.7
+ *
+ * @return bool True if option is activated
+ */
+function is_rocket_generate_caching_mobile_files() {
+	return get_rocket_option( 'do_caching_mobile_files', false );
+}
+
+/**
  * Check if we need to cache SSL requests of the website (if available)
  *
  * @since 1.0

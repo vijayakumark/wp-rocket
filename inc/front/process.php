@@ -132,12 +132,24 @@ else {
 	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
 }
 
-// Caching file path
-$rocket_cache_filepath = $request_uri_path . '/index.html';
+$filename = 'index';
 
-if ( ( rocket_is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
-	$rocket_cache_filepath = $request_uri_path . '/index-https.html';
+// Rename the caching filename for mobile
+if ( class_exists( 'Rocket_Mobile_Detect' ) ) {
+	$detect = new Rocket_Mobile_Detect();
+	
+	if ( $detect->isMobile() ) {
+		$filename .= '-mobile';
+	}
 }
+
+// Rename the caching filename for SSL URLs
+if ( ( rocket_is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
+	$filename .= '-https';
+}
+
+// Caching file path
+$rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
 // Serve the cache file if exist
 rocket_serve_cache_file( $request_uri_path );
