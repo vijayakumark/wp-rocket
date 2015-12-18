@@ -415,9 +415,8 @@ function __rocket_purge_cache()
  *
  * @since 2.7
  */
-add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
-function do_admin_post_rocket_purge_opcache()
-{
+add_action( 'admin_post_rocket_purge_opcache', '__do_admin_post_rocket_purge_opcache' );
+function __do_admin_post_rocket_purge_opcache() {
     if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_opcache' ) ) {
         wp_nonce_ays( '' );
     }
