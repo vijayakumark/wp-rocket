@@ -739,6 +739,17 @@ function rocket_settings_callback( $inputs )
 	} else {
 		$inputs['minify_js_in_footer'] = array();
 	}
+	
+	/*
+	 * Option : CloudFlare Domain
+	 */
+	if ( ! empty( $inputs['cloudflare_domain'] ) ) {
+		$inputs['cloudflare_domain'] = trim( $inputs['cloudflare_domain'] );
+		$inputs['cloudflare_domain'] = rocket_remove_url_protocol( $inputs['cloudflare_domain'] );
+		$inputs['cloudflare_domain'] = str_replace( '/' , '', $inputs['cloudflare_domain'] ); 
+	} else {
+		$inputs['cloudflare_domain'] = '';
+	}
 
 	/*
 	 * Option : WL
