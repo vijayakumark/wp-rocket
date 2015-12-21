@@ -449,6 +449,48 @@ function rocket_clean_home( $lang = '' )
 }
 
 /**
+ * Remove the home cache feed
+ *
+ * @since 2.7
+ *
+ * @return void
+ */
+function rocket_clean_home_feeds() {
+
+    $urls = array();
+	$urls[] = get_feed_link();
+	$urls[] = get_feed_link( 'comments_' );
+
+    /**
+	 * Filter the home feeds urls
+	 *
+	 * @since 2.7
+	 * @param array 	$urls The urls of the home feeds
+	*/
+    $urls = apply_filters( 'rocket_clean_home_feeds', $urls );
+
+    /**
+	 * Fires before the home feeds cache is deleted
+	 *
+	 * @since 2.7
+	 *
+	 * @param array $urls The urls of the home feeds
+	*/
+    do_action( 'before_rocket_clean_home_feeds', $urls );
+
+    rocket_clean_files( $urls );
+
+    /**
+	 * Fires after the home feeds cache was deleted
+	 *
+	 * @since 2.7
+	 *
+	 * @param array $urls The urls of the home feeds
+	*/
+    do_action( 'after_rocket_clean_home_feeds', $urls );
+}
+
+/**
  * Remove all cache files of the domain
  *
  * @since 2.0 Delete domain cache files for all users
