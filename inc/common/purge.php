@@ -288,7 +288,11 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang )
 
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
-
+	
+	// Add default WordPress feeds (posts & comments)
+	array_push( $purge_urls, get_feed_link() );
+	array_push( $purge_urls, get_feed_link( 'comments_' ) );
+	
 	// Get the author page
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
 
