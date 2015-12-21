@@ -628,7 +628,7 @@ function rocket_settings_callback( $inputs )
 			$inputs['cache_reject_cookies'] = explode( "\n", $inputs['cache_reject_cookies'] );
 		}
 		$inputs['cache_reject_cookies'] = array_map( 'trim', $inputs['cache_reject_cookies'] );
-		$inputs['cache_reject_cookies'] = array_map( 'rocket_sanitize_cookie', $inputs['cache_reject_cookies'] );
+		$inputs['cache_reject_cookies'] = array_map( 'rocket_sanitize_key', $inputs['cache_reject_cookies'] );
 		$inputs['cache_reject_cookies'] = (array) array_filter( $inputs['cache_reject_cookies'] );
 		$inputs['cache_reject_cookies'] = array_unique( $inputs['cache_reject_cookies'] );
 	} else {
@@ -643,7 +643,7 @@ function rocket_settings_callback( $inputs )
 			$inputs['cache_query_strings'] = explode( "\n", $inputs['cache_query_strings'] );
 		}
 		$inputs['cache_query_strings'] = array_map( 'trim', $inputs['cache_query_strings'] );
-		$inputs['cache_query_strings'] = array_map( 'sanitize_key', $inputs['cache_query_strings'] );
+		$inputs['cache_query_strings'] = array_map( 'rocket_sanitize_key', $inputs['cache_query_strings'] );
 		$inputs['cache_query_strings'] = (array) array_filter( $inputs['cache_query_strings'] );
 		$inputs['cache_query_strings'] = array_unique( $inputs['cache_query_strings'] );
 	} else {

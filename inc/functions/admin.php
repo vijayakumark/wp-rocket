@@ -205,12 +205,12 @@ function rocket_get_active_plugins() {
 }
 
 /**
- * Used to sanitize values of the "Don't cache pages that use the following cookies" option.
+ * Sanitizes a string key like the sanitize_key() WordPress function without forcing lowercase.
  *
- * @since 2.6.4
+ * @since 2.7
  */
-function rocket_sanitize_cookie( $cookie ) {
-	$cookie = preg_replace( '/[^a-z0-9_\-]/i', '', $cookie );
+function rocket_sanitize_key( $key ) {
+	$cookie = preg_replace( '/[^a-z0-9_\-]/i', '', $key );
 	return $cookie;
 }
 
