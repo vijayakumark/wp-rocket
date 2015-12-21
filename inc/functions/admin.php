@@ -210,8 +210,8 @@ function rocket_get_active_plugins() {
  * @since 2.7
  */
 function rocket_sanitize_key( $key ) {
-	$cookie = preg_replace( '/[^a-z0-9_\-]/i', '', $key );
-	return $cookie;
+	$key = preg_replace( '/[^a-z0-9_\-]/i', '', $key );
+	return $key;
 }
 
 /**
