@@ -130,6 +130,20 @@ function rocket_admin_bar( $wp_admin_bar )
 
 		}
 
+        // Purge OPCache cache content if OPcache is active
+        if ( function_exists( 'opcache_reset' ) ) {
+
+            $action = 'rocket_purge_opcache';
+
+            $wp_admin_bar->add_menu( array(
+				'parent' => 'wp-rocket',
+				'id' 	 => 'purge-opcache',
+				'title'  => __( 'Purge OPcache content', 'rocket' ),
+				'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action ), $action ),
+			));
+
+        }
+
 		$action = 'preload';
 	    // Go robot gogo !
 
