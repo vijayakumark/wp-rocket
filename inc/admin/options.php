@@ -520,7 +520,7 @@ function rocket_display_options()
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<div class="rkt-tab" id="tab_varnish">
 					<p class="description varnish_description"><?php _e( 'The following options are for hosting with Varnish cache system.', 'rocket' ); ?><br/>
-					<?php _e( 'If you don’t know if Varnish is installed on your sever, you can ignore these options.', 'rocket' ); ?></p>
+					<?php _e( 'If you don’t know if Varnish is installed on your server, you can ignore these settings.', 'rocket' ); ?></p>
 					<?php do_settings_sections( 'rocket_varnish' ); ?>
 				</div>
 				<?php $class_hidden = !defined( 'WP_RWL' ) ? ' hidden' : ''; ?>
