@@ -88,13 +88,13 @@ if ( ! isset( $rocket_cache_ssl ) && rocket_is_ssl() ) {
 	return;
 }
 
-// Don't cache this pages
+// Don't cache these pages
 if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
 	rocket_define_donotminify_constants( true );
 	return;
 }
 
-// Don't cache page with this cookie
+// Don't cache page with these cookies
 if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotminify_constants( true );
 	return;
