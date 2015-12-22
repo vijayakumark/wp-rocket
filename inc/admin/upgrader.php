@@ -109,6 +109,8 @@ function rocket_first_install()
 			'cloudflare_devmode'	   => 0,
 			'cloudflare_auto_settings' => 0,
 			'cloudflare_old_settings'  => 0,
+			'varnish_auto_purge'	   => 0,
+			'do_caching_files'	   	   => 0,
 			'do_beta'                  => 0,
 		)
 	);
