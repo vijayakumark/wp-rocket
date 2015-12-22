@@ -117,9 +117,22 @@ add_settings_field(
 			'label_screen' => __( 'Mobile cache:', 'rocket' ),
 		),
 		array(
+			'parent'	   => 'cache_mobile',
+			'type'         => 'checkbox',
+			'label'        => __( 'Create a caching file for mobile visitors.', 'rocket' ),
+			'name'         => 'do_caching_mobile_files'
+		),
+		array(
+			'parent'	   => 'cache_mobile',
+			'type'         => 'helper_description',
+			'name'         => 'mobile',
+			'description'  => __( 'Are you using a dedicated mobile theme or <code>wp_is_mobile()</code>? If so, you should activate this option to serve a specific caching file for your mobile visitors.', 'rocket' ),
+		),
+		array(
+			'parent'	   => 'cache_mobile',
 			'type'         => 'helper_warning',
 			'name'         => 'mobile',
-			'description'  => wp_sprintf( __( 'Don\'t turn on this option if you use one of these plugins: %l.', 'rocket' ), $mobile_plugins ),
+			'description'  => wp_sprintf( __( 'If you are using one of these plugins, you must activate this option: %l', 'rocket' ), $mobile_plugins ),
 		),
 	)
 );

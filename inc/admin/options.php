@@ -104,7 +104,7 @@ function rocket_field( $args )
 			break;
 
 			case 'checkbox' : 
-					if ( isset( $args['label_screen'] ) ) {
+				if ( isset( $args['label_screen'] ) ) {
 					?>
 						<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<?php } ?>
@@ -143,21 +143,21 @@ function rocket_field( $args )
 
 			case 'helper_description' :
 
-				$description = isset( $args['description'] ) ? '<p class="description desc '.$class.'">'.$args['description'].'</p>' : '';
+				$description = isset( $args['description'] ) ? '<p class="description desc '.$class.'" ' . $parent . '>'.$args['description'].'</p>' : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
 			break;
 
 			case 'helper_help' :
 
-				$description = isset( $args['description'] ) ? '<p class="description help '.$class.'">'.$args['description'].'</p>' : '';
+				$description = isset( $args['description'] ) ? '<p class="description help ' . $class . '" ' . $parent . '>'.$args['description'].'</p>' : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'help' );
 
 			break;
 
 			case 'helper_warning' :
 
-				$description = isset( $args['description'] ) ? '<p class="description warning file-error '.$class.'"><b>'.__( 'Warning: ', 'rocket') . '</b>' . $args['description'].'</p>' : '';
+				$description = isset( $args['description'] ) ? '<p class="description warning file-error ' . $class . '" ' . $parent . '><b>'.__( 'Warning: ', 'rocket') . '</b>' . $args['description'].'</p>' : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'warning' );
 
 			break;
@@ -445,6 +445,7 @@ function rocket_display_options()
 		'advanced',
 		'cloudflare',
 		'cdn',
+		'varnish',
 		'white-label',
 		'tools',
 		'tutorials',
@@ -490,6 +491,7 @@ function rocket_display_options()
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
+				<a href="#tab_varnish" class="nav-tab"><?php _e( 'Varnish', 'rocket' ); ?></a>
 				<?php if( defined( 'WP_RWL' ) ) { ?>
 					<a href="#tab_whitelabel" class="nav-tab"><?php _e( 'White Label', 'rocket' ); ?></a>
 				<?php } ?>
@@ -516,6 +518,11 @@ function rocket_display_options()
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
+				<div class="rkt-tab" id="tab_varnish">
+					<p class="description varnish_description"><?php _e( 'The following options are for hosting with Varnish cache system.', 'rocket' ); ?><br/>
+					<?php _e( 'If you don’t know if Varnish is installed on your server, you can ignore these settings.', 'rocket' ); ?></p>
+					<?php do_settings_sections( 'rocket_varnish' ); ?>
+				</div>
 				<?php $class_hidden = !defined( 'WP_RWL' ) ? ' hidden' : ''; ?>
 				<div class="rkt-tab<?php echo $class_hidden; ?>" id="tab_whitelabel"><?php do_settings_sections( 'rocket_white_label' ); ?></div>
 				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'rocket_tools' ); ?></div>
@@ -993,7 +1000,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 		
 		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , $cf_settings ) : '';
 	}
-
+		
 	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}

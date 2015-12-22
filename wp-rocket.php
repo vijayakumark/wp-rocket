@@ -145,6 +145,7 @@ function rocket_init()
         require( WP_ROCKET_ADMIN_UI_PATH . 'notices.php' );
         require( WP_ROCKET_ADMIN_UI_PATH . 'meta-boxes.php' );
     } else if ( rocket_valid_key() ) {
+        require( WP_ROCKET_FRONT_PATH . 'cache.php' );
         require( WP_ROCKET_FRONT_PATH . 'minify.php' );
         require( WP_ROCKET_FRONT_PATH . 'cookie.php' );
         require( WP_ROCKET_FRONT_PATH . 'images.php' );

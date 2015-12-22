@@ -70,6 +70,7 @@ function rocket_first_install()
 		array(
 			'secret_cache_key'         => $secret_cache_key,
 			'cache_mobile'             => 0,
+			'do_caching_mobile_files'  => 0,
 			'cache_logged_user'        => 0,
 			'cache_ssl'                => 0,
 			'cache_reject_uri'         => array(),
@@ -109,6 +110,8 @@ function rocket_first_install()
 			'cloudflare_devmode'	   => 0,
 			'cloudflare_auto_settings' => 0,
 			'cloudflare_old_settings'  => 0,
+			'varnish_auto_purge'	   => 0,
+			'do_caching_files'	   	   => 0,
 			'do_beta'                  => 0,
 		)
 	);
@@ -238,6 +241,14 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
+	}
+	
+	if ( version_compare( $actual_version, '2.7', '<' ) ) {
+		// Regenerate advanced-cache.php file
+		rocket_generate_advanced_cache_file();
+		
+		// Regenerate config file
+		rocket_generate_config_file();
 	}
 }
 /* END UPGRADER'S HOOKS */
