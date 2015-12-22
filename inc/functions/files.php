@@ -22,7 +22,14 @@ function get_rocket_advanced_cache_file()
 
 	// Get config path
 	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n\n";
-
+	
+	// Include the Mobile Detect class if we have to create a different caching file for mobile
+	if ( is_rocket_generate_caching_mobile_files() ) {
+		$buffer .= 'if ( file_exists( \''. WP_ROCKET_VENDORS_PATH . 'Mobile_Detect.php' . '\' ) ) {' . "\n";
+		$buffer .= "\t" . 'include( \''. WP_ROCKET_VENDORS_PATH . 'Mobile_Detect.php' . '\' );' . "\n";
+	$buffer .= '}' . "\n";
+	}
+	
 	// Include the process file in buffer
 	$buffer .= 'if ( file_exists( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' ) ) {' . "\n";
 		$buffer .= "\t" . 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
@@ -62,10 +69,10 @@ function rocket_generate_advanced_cache_file()
  *
  * @return array Names of all config files & The content that will be printed
  */
-function get_rocket_config_file()
-{
+function get_rocket_config_file() {
 	$options = get_option( WP_ROCKET_SLUG );
-	if( ! $options ) {
+	
+	if ( ! $options ) {
 		return;
 	}
 
@@ -79,8 +86,7 @@ function get_rocket_config_file()
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {
-
-		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'secret_cache_key' ) {
+		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'do_caching_mobile_files' || $option == 'secret_cache_key' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
 
@@ -424,7 +430,7 @@ function rocket_clean_home( $lang = '' )
 	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage
-	if ( $files = glob( $root . '/{index,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
+	if ( $files = glob( $root . '/{index,index-mobile,index-mobile-https,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
 		foreach ( $files as $file ) { // no array map to use @
 			@unlink( $file );
 		}

@@ -121,7 +121,9 @@ if ( isset( $rocket_cookie_hash )
 	&& isset( $rocket_cache_reject_cookies )
 	&& !strstr( $rocket_cache_reject_cookies, 'wordpress_logged_in_' )
 ) {
-	$user_key = reset( ( explode( '|', $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ]) ) ) . '-' . $rocket_secret_cache_key;
+	$user_key = explode( '|', $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] );
+	$user_key = reset( ( $user_key ) );
+	$user_key = $user_key . '-' . $rocket_secret_cache_key;
 
 	// Get cache folder of host name
 	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
@@ -130,12 +132,24 @@ else {
 	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
 }
 
-// Caching file path
-$rocket_cache_filepath = $request_uri_path . '/index.html';
+$filename = 'index';
 
-if ( ( rocket_is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
-	$rocket_cache_filepath = $request_uri_path . '/index-https.html';
+// Rename the caching filename for mobile
+if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
+	$detect = new Rocket_Mobile_Detect();
+	
+	if ( $detect->isMobile() ) {
+		$filename .= '-mobile';
+	}
 }
+
+// Rename the caching filename for SSL URLs
+if ( ( rocket_is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
+	$filename .= '-https';
+}
+
+// Caching file path
+$rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
 // Serve the cache file if exist
 rocket_serve_cache_file( $request_uri_path );

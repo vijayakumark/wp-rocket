@@ -143,21 +143,21 @@ function rocket_field( $args )
 
 			case 'helper_description' :
 
-				$description = isset( $args['description'] ) ? '<p class="description desc '.$class.'">'.$args['description'].'</p>' : '';
+				$description = isset( $args['description'] ) ? '<p class="description desc '.$class.'" ' . $parent . '>'.$args['description'].'</p>' : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
 			break;
 
 			case 'helper_help' :
 
-				$description = isset( $args['description'] ) ? '<p class="description help '.$class.'">'.$args['description'].'</p>' : '';
+				$description = isset( $args['description'] ) ? '<p class="description help ' . $class . '" ' . $parent . '>'.$args['description'].'</p>' : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'help' );
 
 			break;
 
 			case 'helper_warning' :
 
-				$description = isset( $args['description'] ) ? '<p class="description warning file-error '.$class.'"><b>'.__( 'Warning: ', 'rocket') . '</b>' . $args['description'].'</p>' : '';
+				$description = isset( $args['description'] ) ? '<p class="description warning file-error ' . $class . '" ' . $parent . '><b>'.__( 'Warning: ', 'rocket') . '</b>' . $args['description'].'</p>' : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'warning' );
 
 			break;
