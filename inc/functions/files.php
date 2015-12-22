@@ -129,8 +129,8 @@ function get_rocket_config_file() {
 	}
 
 	foreach ( $urls as $url ) {
-		list( $host, $path ) = get_rocket_parse_url( rtrim( $url, '/' ) );
-		$path = ( ! empty( $path ) ) ? str_replace( '/', '.', rtrim( $path, '/' ) ) : '';
+		list( $host, $path ) = get_rocket_parse_url( untrailingslashit( $url ) );
+		$path = ( ! empty( $path ) ) ? str_replace( '/', '.', untrailingslashit( $path ) ) : '';
 		$config_files_path[] = WP_ROCKET_CONFIG_PATH . strtolower( $host ) . $path . '.php';
 	}
 
@@ -407,7 +407,7 @@ function rocket_clean_home( $lang = '' )
 		$host = str_replace( '.' , '_', $host );
 	}
 
-	$root = WP_ROCKET_CACHE_PATH . $host . '*' . rtrim( $path, '/' );
+	$root = WP_ROCKET_CACHE_PATH . $host . '*' . untrailingslashit( $path );
 	
 	/**
 	 * Filter the homepage caching folder root
@@ -736,7 +736,7 @@ function rocket_clean_cache_dir() {
  */
 function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 {
-	$dir = rtrim( $dir, '/' );
+	$dir = untrailingslashit( $dir );
 
 	/**
 	 * Fires after a file/directory cache was deleted
@@ -815,8 +815,8 @@ function rocket_mkdir_p( $target )
 	$target = str_replace( '//', '/', $target );
 
 	// safe mode fails with a trailing slash under certain PHP versions.
-	$target = rtrim($target, '/'); // Use rtrim() instead of untrailingslashit to avoid formatting.php dependency.
-	if ( empty($target) ) {
+	$target = untrailingslashit( $target );
+	if ( empty( $target ) ) {
 		$target = '/';
 	}
 

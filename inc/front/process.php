@@ -126,10 +126,10 @@ if ( isset( $rocket_cookie_hash )
 	$user_key = $user_key . '-' . $rocket_secret_cache_key;
 
 	// Get cache folder of host name
-	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
+	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . untrailingslashit( $request_uri );
 }
 else {
-	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
+	$request_uri_path = $rocket_cache_path . $host . untrailingslashit( $request_uri );
 }
 
 $filename = 'index';
