@@ -151,9 +151,6 @@ function get_rocket_cache_reject_uri()
 		
 	// Exclude hide login plugins
 	$uri = array_merge( $uri, get_rocket_logins_exclude_pages() );
-
-    // Exclude Give pages
-    $uri = array_merge( $uri, get_rocket_give_exclude_pages() );
 	
 	/**
 	  * By default, don't cache the WP REST API.

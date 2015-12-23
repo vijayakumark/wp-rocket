@@ -1,32 +1,47 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_action( 'update_option_give_settings', '__rocket_after_update_single_options', 10, 2 );
-
-add_action( 'activate_give/give.php', 'rocket_generate_config_file', 11 );
-add_action( 'deactivate_give/give.php', 'rocket_generate_config_file', 11 );
-
-add_action( 'activate_give/give.php', 'flush_rocket_htaccess', 11 );
-add_action( 'deactivate_give/give.php', 'flush_rocket_htaccess', 11 );
 
 /**
- * Get Give pages to automatically exclude them from the cache.
+ * Exclude pages of Give plugin from cache.
  *
  * @since 2.7
  *
- * @param array $urls
- *
- * @return array $urls
  */
-function get_rocket_give_exclude_pages() {
+if ( defined( 'GIVE_VERSION' ) && function_exists( 'give_get_settings' ) ) {
 
-    $urls = array();
+    add_filter( 'rocket_cache_reject_uri', '__rocket_add_give_exclude_pages' );
+    add_action( 'update_option_give_settings', '__rocket_after_update_single_options', 10, 2 );
 
-    if ( defined( 'GIVE_VERSION' ) && function_exists( 'give_get_settings' ) && 'deactivate_give/give.php' != current_filter() ) {
-        $give_options = give_get_settings();
-        $urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['success_page'], 'page' ) );
-        $urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['history_page'], 'page' ) );
-    }
+}
+
+function __rocket_add_give_exclude_pages( $urls ) {
+
+    $give_options = give_get_settings();
+    $urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['success_page'], 'page' ) );
+    $urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['history_page'], 'page' ) );
 
 	return $urls;
+}
+
+add_action( 'activate_give/give.php', '__rocket_activate_give', 11 );
+function __rocket_activate_give() {
+    add_filter( 'rocket_cache_reject_uri', '__rocket_add_give_exclude_pages' );
+
+    // Update the WP Rocket rules on the .htaccess
+    flush_rocket_htaccess();
+
+    // Regenerate the config file
+    rocket_generate_config_file();
+}
+
+add_action( 'deactivate_give/give.php', '__rocket_remove_give_exclude_pages', 11 );
+function __rocket_remove_give_exclude_pages() {
+    remove_filter( 'rocket_cache_reject_uri', '__rocket_add_give_exclude_pages' );
+
+    // Update the WP Rocket rules on the .htaccess
+    flush_rocket_htaccess();
+
+    // Regenerate the config file
+    rocket_generate_config_file();
 }
