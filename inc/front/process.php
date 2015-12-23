@@ -100,6 +100,12 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 	return;
 }
 
+// Don't cache page when these cookies don't exist
+if ( isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+	rocket_define_donotminify_constants( true );
+	return;
+}
+
 // Don't cache page with these user agents
 if ( isset( $rocket_cache_reject_ua, $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '#(' . $rocket_cache_reject_ua . ')#', $_SERVER['HTTP_USER_AGENT'] ) ) {
 	rocket_define_donotminify_constants( true );
