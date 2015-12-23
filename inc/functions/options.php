@@ -231,6 +231,30 @@ function get_rocket_cache_reject_cookies()
 }
 
 /**
+ * Get list of mandatory cookies to be able to cache pages.
+ *
+ * @since 2.7
+ *
+ * @return array List of mandatory cookies.
+ */
+function get_rocket_cache_mandatory_cookies() {
+	$cookies = array();
+	
+	/**
+	 * Filter list of mandatory cookies
+	 *
+	 * @since 2.7
+	 *
+	 * @param array List of dynamic cookies
+	 */
+	$cookies = apply_filters( 'rocket_cache_mandatory_cookies', $cookies );
+	$cookies = array_filter( $cookies );
+	
+	$cookies = implode( '|', array_filter( $cookies ) );
+	return $cookies;
+}
+
+/**
  * Get all User-Agent we don't allow to get cache files
  *
  * @since 2.3.5
