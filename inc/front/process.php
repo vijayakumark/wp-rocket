@@ -19,6 +19,12 @@ if ( is_admin() ) {
 	return;
 }
 
+// Don't cache if on customizer preview to prevent issue if JS minification & Logged-in user cache are enabled
+if ( isset( $_POST['wp_customize'] ) ) {
+    rocket_define_donotminify_constants( true );
+    return;
+}
+
 // Don't cache without GET method
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET' ) {
  	return;
