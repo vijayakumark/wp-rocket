@@ -102,6 +102,35 @@ add_settings_field(
 	)
 );
 add_settings_field(
+	'rocket_cloudflare_protocol_rewrite',
+	__( 'HTTPS Protocol Rewrite', 'rocket' ),
+	'rocket_field',
+	'rocket_cloudflare',
+	'rocket_display_cloudflare_options',
+	array(
+		array(
+			'type'         => 'select',
+			'label_for'    => 'cloudflare_protocol_rewrite',
+			'label_screen' => __( 'HTTPS Protocol Rewrite', 'rocket' ),
+			'options'	   => array(
+				0 => __( 'Off', 'rocket' ),
+				1 => __( 'On', 'rocket' )
+			),
+		),
+		array(
+			'type' 		   => 'helper_description',
+			'name'         => 'cloudflare_protocol_rewrite',
+			'description'  => sprintf( 
+				__( 'Rewrite all images, stylesheets and scripts from using either %1$shttp://%2$s or %1$shttps://%2$s to using just %1$s//%2$s to support %3$sFlexible SSL%4$s.', 'rocket' ),
+				'<code>', 
+				'</code>', 
+				'<a href="https://support.cloudflare.com/hc/en-us/articles/200170416-What-do-the-SSL-options-Off-Flexible-SSL-Full-SSL-Full-SSL-Strict-mean-" target="_blank">',
+				'</a>'
+			),
+		)
+	)
+);
+add_settings_field(
 	'rocket_purge_cloudflare',
 	__( 'Clear cache', 'rocket' ),
 	'rocket_button',
