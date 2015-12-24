@@ -121,11 +121,11 @@ add_settings_field(
 			'type' 		   => 'helper_description',
 			'name'         => 'cloudflare_protocol_rewrite',
 			'description'  => sprintf( 
-				__( 'Rewrite all images, stylesheets and scripts from using either %1$shttp://%2$s or %1$shttps://%2$s to using just %1$s//%2$s to support %3$sFlexible SSL%4$s.', 'rocket' ),
-				'<code>', 
-				'</code>', 
-				'<a href="https://support.cloudflare.com/hc/en-us/articles/200170416-What-do-the-SSL-options-Off-Flexible-SSL-Full-SSL-Full-SSL-Strict-mean-" target="_blank">',
-				'</a>'
+				__( 'Rewrite all images, stylesheets and scripts from using either %1$s or %2$s to using just %3$s to support %4$s.', 'rocket' ),
+				'<code>http://</code>', 
+				'<code>https://</code>', 
+				'<code>//</code>', 
+				'<a href="https://support.cloudflare.com/hc/en-us/articles/200170416-What-do-the-SSL-options-Off-Flexible-SSL-Full-SSL-Full-SSL-Strict-mean-" target="_blank">Flexible SSL</a>'
 			),
 		)
 	)
