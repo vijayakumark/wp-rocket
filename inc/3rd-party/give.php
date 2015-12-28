@@ -9,17 +9,15 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  *
  */
 if ( defined( 'GIVE_VERSION' ) && function_exists( 'give_get_settings' ) ) {
-
     add_filter( 'rocket_cache_reject_uri', '__rocket_add_give_exclude_pages' );
     add_action( 'update_option_give_settings', '__rocket_after_update_single_options', 10, 2 );
-
 }
 
 function __rocket_add_give_exclude_pages( $urls ) {
-
     $give_options = give_get_settings();
     $urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['success_page'], 'page' ) );
     $urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['history_page'], 'page' ) );
+    $urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $give_options['failure_page'], 'page' ) );
 
 	return $urls;
 }
