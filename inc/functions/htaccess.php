@@ -12,7 +12,9 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  */
 function flush_rocket_htaccess( $force = false )
 {
-	if ( ! $GLOBALS['is_apache'] ) {
+	global $is_apache;
+	
+	if ( ! $is_apache ) {
 		return;
 	}
 

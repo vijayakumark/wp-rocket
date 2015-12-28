@@ -351,12 +351,13 @@ function rocket_warning_advanced_cache_not_ours()
 add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
 function rocket_warning_htaccess_permissions()
 {
+	global $is_apache;
 	$htaccess_file =  get_home_path() . '.htaccess';
 
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( ! is_writable( $htaccess_file ) )
-	    && $GLOBALS['is_apache']
+	    && $is_apache
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );

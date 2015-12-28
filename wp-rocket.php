@@ -184,10 +184,11 @@ register_deactivation_hook( __FILE__, 'rocket_deactivation' );
 function rocket_deactivation()
 {
     if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) {
+      	global $is_apache;
         $causes = array();
 
         // .htaccess problem
-        if ( $GLOBALS['is_apache'] && ! is_writable( get_home_path() . '.htaccess' ) ) {
+        if ( $is_apache && ! is_writable( get_home_path() . '.htaccess' ) ) {
             $causes[] = 'htaccess';
         }
 
