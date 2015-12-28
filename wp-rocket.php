@@ -160,6 +160,8 @@ function rocket_init()
         if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'lazyload.php' );
         }
+        
+        require( WP_ROCKET_FRONT_PATH . 'protocol.php' );
     }
 
     // You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode
