@@ -231,7 +231,8 @@ function get_rocket_minify_excluded_external_js() {
 		'verify.authorize.net',
 		'ads.themoneytizer.com',
 		'embed.finanzcheck.de',
-		'imagesrv.adition.com'
+		'imagesrv.adition.com',
+		'js.juicyads.com'
 	) );
 	
 	return $excluded_external_js;		
