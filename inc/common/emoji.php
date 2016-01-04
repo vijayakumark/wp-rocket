@@ -22,7 +22,7 @@ function __rocket_disable_emoji() {
 }
 
 /**
- * Filter function used to remove the tinymce emoji plugin.
+ * Remove the tinymce emoji plugin.
  * 
  * @since 2.7
  */
