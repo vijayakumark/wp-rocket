@@ -116,6 +116,8 @@ function get_rocket_config_file() {
 	}
 	
 	$buffer .= '$rocket_cache_mandatory_cookies = ' . var_export( get_rocket_cache_mandatory_cookies(), true ) . ';'  . "\n";
+	
+	$buffer .= '$rocket_cache_dynamic_cookies = ' . var_export( get_rocket_cache_dynamic_cookies(), true ) . ';'  . "\n";
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
@@ -432,7 +434,7 @@ function rocket_clean_home( $lang = '' )
 	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage
-	if ( $files = glob( $root . '/{index,index-mobile,index-mobile-https,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
+	if ( $files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
 		foreach ( $files as $file ) { // no array map to use @
 			@unlink( $file );
 		}

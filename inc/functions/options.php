@@ -30,6 +30,7 @@ function get_rocket_option( $option, $default = false )
 		return WP_ROCKET_EMAIL;
 	}
 	$value = isset( $options[ $option ] ) && $options[ $option ] !== '' ? $options[ $option ] : $default;
+	
 	/**
 	 * Filter any WP Rocket option after read
 	 *
@@ -78,8 +79,7 @@ function is_rocket_cache_feed() {
  *
  * @return bool True if option is activated
  */
-function is_rocket_cache_mobile()
-{
+function is_rocket_cache_mobile() {
 	return get_rocket_option( 'cache_mobile', false );
 }
 
@@ -165,7 +165,7 @@ function get_rocket_cache_reject_uri()
 	if( function_exists( 'json_get_url_prefix' ) && $rocket_cache_reject_wp_rest_api ) {
 		$uri[] = '/' . json_get_url_prefix() . '/(.*)';	
 	}
-
+	
 	/**
 	  * By default, don't cache the WooCommerce REST API.
 	  *
@@ -242,12 +242,35 @@ function get_rocket_cache_mandatory_cookies() {
 	 *
 	 * @since 2.7
 	 *
-	 * @param array List of dynamic cookies
+	 * @param array List of mandatory cookies
 	 */
 	$cookies = apply_filters( 'rocket_cache_mandatory_cookies', $cookies );
 	$cookies = array_filter( $cookies );
 	
 	$cookies = implode( '|', array_filter( $cookies ) );
+	return $cookies;
+}
+
+/**
+ * Get list of dynamic cookies.
+ *
+ * @since 2.7
+ *
+ * @return array List of dynamic cookies.
+ */
+function get_rocket_cache_dynamic_cookies() {
+	$cookies = array();
+		
+	/**
+	 * Filter list of dynamic cookies
+	 *
+	 * @since 2.7
+	 *
+	 * @param array List of dynamic cookies
+	 */
+	$cookies = apply_filters( 'rocket_cache_dynamic_cookies', $cookies );
+	$cookies = array_filter( $cookies );
+	
 	return $cookies;
 }
 
