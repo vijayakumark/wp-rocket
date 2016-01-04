@@ -70,6 +70,7 @@ function rocket_first_install() {
 			'cache_feed'				  => 0,
 			'cache_logged_user'           => 0,
 			'cache_ssl'                   => ( rocket_is_ssl_website() ) ? 1 : 0,
+			'emoji'					  => 0,
 			'cache_reject_uri'            => array(),
 			'cache_reject_cookies'        => array(),
 			'cache_reject_ua'             => array(),
