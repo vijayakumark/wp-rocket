@@ -7,8 +7,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 1.0
  */
 add_action( 'admin_init', 'rocket_upgrader' );
-function rocket_upgrader()
-{
+function rocket_upgrader() {
 	// Grab some infos
 	$actual_version = get_rocket_option( 'version' );
 	// You can hook the upgrader to trigger any action when WP Rocket is upgraded
@@ -48,16 +47,13 @@ function rocket_upgrader()
 	}
 }
 
-/* BEGIN UPGRADER'S HOOKS */
-
 /**
  * Keeps this function up to date at each version
  *
  * @since 1.0
  */
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
-function rocket_first_install()
-{
+function rocket_first_install() {
 	// Generate an random key for cache dir of user
 	$secret_cache_key = create_rocket_uniqid();
 
@@ -73,7 +69,7 @@ function rocket_first_install()
 			'do_caching_mobile_files'     => 0,
 			'cache_feed'				  => 0,
 			'cache_logged_user'           => 0,
-			'cache_ssl'                   => 0,
+			'cache_ssl'                   => ( rocket_is_ssl_website() ) ? 1 : 0,
 			'cache_reject_uri'            => array(),
 			'cache_reject_cookies'        => array(),
 			'cache_reject_ua'             => array(),
@@ -127,8 +123,7 @@ function rocket_first_install()
  * @since 1.0
  */
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
-function rocket_new_upgrade( $wp_rocket_version, $actual_version )
-{
+function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '1.0.1', '<' ) ) {
 		wp_clear_scheduled_hook( 'rocket_check_event' );
 	}
@@ -253,4 +248,3 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 		rocket_generate_config_file();
 	}
 }
-/* END UPGRADER'S HOOKS */

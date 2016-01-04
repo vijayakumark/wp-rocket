@@ -177,8 +177,7 @@ function __rocket_add_own_ua( $r, $url ) {
  *
  * @since 2.1
  */
-function rocket_hidden_fields( $fields )
-{
+function rocket_hidden_fields( $fields ) {
 	if ( ! is_array( $fields ) ) {
 		return;
 	}
@@ -223,3 +222,12 @@ function rocket_sanitize_ua( $ua ) {
 	$ua = preg_replace( '/[^a-z0-9._\-\/\s\x5c]/i', '', $ua );
 	return $ua;
 }
+
+/**
+ * Check if the whole website is on the SSL protocol
+ *
+ * @since 2.7
+ */
+function rocket_is_ssl_website() {
+	return 'https' === parse_url( home_url(), PHP_URL_SCHEME );
+ }

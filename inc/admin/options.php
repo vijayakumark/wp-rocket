@@ -17,8 +17,7 @@ function rocket_correct_capability_for_options_page( $capability ) {
  * @since 1.0
  */
 add_action( 'admin_menu', 'rocket_admin_menu' );
-function rocket_admin_menu()
-{
+function rocket_admin_menu() {
 	// do not use WP_ROCKET_PLUGIN_NAME here because if the WL has just been activated, the constant is not correct yet
 	$wl_plugin_name = get_rocket_option( 'wl_plugin_name', WP_ROCKET_PLUGIN_NAME );
 
@@ -33,8 +32,7 @@ function rocket_admin_menu()
  *
  * @since 1.0
  */
-function rocket_field( $args )
-{
+function rocket_field( $args ) {
 	if( ! is_array( reset( $args ) ) ) {
 		$args = array( $args );
 	}
@@ -190,8 +188,7 @@ function rocket_field( $args )
  *
  * @since 1.1.0
  */
-function rocket_defered_module()
-{ ?>
+function rocket_defered_module() { ?>
 	<fieldset>
 	<legend class="screen-reader-text"><span><?php _e( '<b>JS</b> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
 
@@ -271,8 +268,7 @@ function rocket_defered_module()
  *
  * @since 2.1
  */
-function rocket_cnames_module()
-{ ?>
+function rocket_cnames_module() { ?>
 		<legend class="screen-reader-text"><span><?php _e( 'Replace site\'s hostname with:', 'rocket' ); ?></span></legend>
 
 		<div id="rkt-cnames" class="rkt-module">
@@ -368,8 +364,7 @@ function rocket_cnames_module()
  *
  * @since 1.1.0
  */
-function rocket_button( $args )
-{
+function rocket_button( $args ) {
 	$button       = $args['button'];
 	$desc         = isset( $args['helper_description'] ) ? $args['helper_description'] : null;
 	$help         = isset( $args['helper_help'] ) ? $args['helper_help'] : null;
@@ -411,8 +406,7 @@ function rocket_button( $args )
  *
  * @since 2.2
  */
-function rocket_video( $args )
-{
+function rocket_video( $args ) {
 	$desc = '<p class="description desc '.sanitize_html_class( $args['name'] ).'">'.$args['description'].'</p>';
 ?>
 	<fieldset class="fieldname-<?php echo $args['name']; ?> fieldtype-button">
@@ -427,8 +421,7 @@ function rocket_video( $args )
  *
  * @since 2.2
  */
-function rocket_include( $args )
-{
+function rocket_include( $args ) {
 	include_once( dirname( __FILE__ ) . '/' . str_replace( '..', '', $args['file'] ) . '.inc.php' );
 }
 
@@ -437,8 +430,7 @@ function rocket_include( $args )
  * @since 1.1.0 Add tabs, tools tab and change options severity
  * @since 1.0
  */
-function rocket_display_options()
-{
+function rocket_display_options() {
 	$modules = array(
 		'api-key',
 		'basic',
@@ -551,8 +543,7 @@ function rocket_display_options()
  * @since 1.0
  */
 add_action( 'admin_init', 'rocket_register_setting' );
-function rocket_register_setting()
-{
+function rocket_register_setting() {
 	register_setting( 'wp_rocket', WP_ROCKET_SLUG, 'rocket_settings_callback' );
 }
 
@@ -561,9 +552,7 @@ function rocket_register_setting()
  *
  * @since 1.0
  */
-function rocket_settings_callback( $inputs )
-{
-
+function rocket_settings_callback( $inputs ) {
 	if ( isset( $_GET['action'] ) && 'purge_cache' == $_GET['action'] ) {
 		return $inputs;
 	}
@@ -888,8 +877,7 @@ function rocket_settings_callback( $inputs )
  */
 
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
-function rocket_after_save_options( $oldvalue, $value )
-{
+function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
 		return;
 	}
@@ -961,13 +949,24 @@ function rocket_after_save_options( $oldvalue, $value )
 }
 
 /**
+ * Auto-activate the SSL option is the website URL is updated with https protocol
+ *
+ * @since 2.7
+ */
+add_action( 'update_option_home', '__rocket_update_ssl_option_after_save_home_url', 10, 2 );
+function __rocket_update_ssl_option_after_save_home_url( $oldvalue, $value ) {
+	if ( 'https' === parse_url( $value, PHP_URL_SCHEME ) ) {
+		update_rocket_option( 'cache_ssl', 1 );
+	}
+}
+
+/**
  * When purge settings are saved we change the scheduled purge
  *
  * @since 1.0
  */
 add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
-function rocket_pre_main_option( $newvalue, $oldvalue )
-{
+function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	if ( ( isset( $newvalue['purge_cron_interval'], $oldvalue['purge_cron_interval'] ) && $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || 	( isset( $newvalue['purge_cron_unit'], $oldvalue['purge_cron_unit'] ) && $newvalue['purge_cron_unit'] != $oldvalue['purge_cron_unit'] ) ) {
 		// Clear WP Rocket cron
 		if ( wp_next_scheduled( 'rocket_purge_time_event' ) ) {
@@ -999,6 +998,11 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 		$cf_settings = array_filter( $cf_settings );
 		
 		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , $cf_settings ) : '';
+	}
+	
+	// Checked the SSL option if the whole website is on SSL
+	if( rocket_is_ssl_website() ) {
+		$newvalue['cache_ssl'] = 1;
 	}
 		
 	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {

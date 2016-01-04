@@ -95,7 +95,7 @@ add_settings_field(
 );
 // Mobile plugins list
 $mobile_plugins = array(
-	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>',
+	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free Version)</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
 	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
 	'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
@@ -103,6 +103,7 @@ $mobile_plugins = array(
 	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>',
 	'<a href="https://wordpress.org/plugins/device-theme-switcher/" target="_blank">Device Theme Switcher</a>'
 );
+
 add_settings_field(
 	'rocket_mobile',
 	__( 'Mobile cache:', 'rocket' ),
@@ -174,6 +175,8 @@ add_settings_field(
 		'label'        => __('Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
 		'label_for'    => 'cache_ssl',
 		'label_screen' => __( 'SSL cache:', 'rocket' ),
+		'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
+		'readonly'	   => rocket_is_ssl_website()
 	)
 );
 add_settings_field(

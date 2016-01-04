@@ -10,8 +10,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @param bool   $default (default: false) The default value of option
  * @return mixed The option value
  */
-function get_rocket_option( $option, $default = false )
-{
+function get_rocket_option( $option, $default = false ) {
 	/**
 	 * Pre-filter any WP Rocket option before read
 	 *
@@ -39,6 +38,22 @@ function get_rocket_option( $option, $default = false )
 	 * @param variant $default The default value
 	*/
 	return apply_filters( 'get_rocket_option_' . $option, $value, $default );
+}
+
+/**
+ * Update a WP Rocket option.
+ *
+ * @since 2.7
+ *
+ * @param  string  $key    The option name
+ * @param  string  $value  The value of the option
+ * @return void
+ */
+function update_rocket_option( $key, $value ) {
+	$options         = get_option( WP_ROCKET_SLUG );
+	$options[ $key ] = $value;
+	
+	update_option( WP_ROCKET_SLUG, $options );
 }
 
 /**
@@ -101,8 +116,7 @@ function is_rocket_generate_caching_mobile_files() {
  * @access public
  * @return bool True if option is activated
  */
-function is_rocket_cache_ssl()
-{
+function is_rocket_cache_ssl() {
 	return get_rocket_option( 'cache_ssl', false );
 }
 
@@ -125,8 +139,7 @@ function is_rocket_cdn_on_ssl() {
  *
  * @return int The interval task cron purge in seconds
  */
-function get_rocket_purge_cron_interval()
-{
+function get_rocket_purge_cron_interval() {
 	if ( ! get_rocket_option( 'purge_cron_interval' ) || ! get_rocket_option( 'purge_cron_unit' ) ) {
 		return 0;
 	}
@@ -142,8 +155,7 @@ function get_rocket_purge_cron_interval()
  *
  * @return array List of rejected uri
  */
-function get_rocket_cache_reject_uri()
-{
+function get_rocket_cache_reject_uri() {
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
 	
 	// Exclude cart & checkout pages from e-commerce plugins
@@ -205,8 +217,7 @@ function get_rocket_cache_reject_uri()
  *
  * @return array List of rejected cookies
  */
-function get_rocket_cache_reject_cookies()
-{
+function get_rocket_cache_reject_cookies() {
 	$cookies   = get_rocket_option( 'cache_reject_cookies', array() );
 	$cookies[] = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
 	$cookies[] = 'wp-postpass_';
@@ -332,8 +343,7 @@ function get_rocket_cdn_reject_files() {
  * @param string $zone (default: 'all') List of zones
  * @return array List of CNAMES
  */
-function get_rocket_cdn_cnames( $zone = 'all' )
-{
+function get_rocket_cdn_cnames( $zone = 'all' ) {
 	if ( (int) get_rocket_option( 'cdn' ) == 0 ) {
 		return array();
 	}
@@ -483,8 +493,7 @@ function get_rocket_deferred_js_files() {
  *
  * @since 1.0
  */
-function rocket_valid_key()
-{
+function rocket_valid_key() {
 	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && get_rocket_option( 'secret_key' ) == hash( 'crc32', get_rocket_option( 'consumer_email' ) );
 }
 
@@ -493,8 +502,7 @@ function rocket_valid_key()
  *
  * @since 2.2 The function do the live check and update the option
  */
-function rocket_check_key( $type = 'transient_1', $data = null )
-{
+function rocket_check_key( $type = 'transient_1', $data = null ) {
 	// Recheck the license
 	$return = rocket_valid_key();
 
