@@ -4,7 +4,7 @@ Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
 Version: 2.7
-Code Name: Yavin
+Code Name: Hoth
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -75,7 +75,11 @@ add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
     // Load translations
-    load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    require( WP_ROCKET_FUNCTIONS_PATH	. 'l10n.php' );
+
+    if ( ! rocket_load_alternative_textdomain() ) {
+        load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    }
 
     // Nothing to do if autosave
     if ( defined( 'DOING_AUTOSAVE' ) ) {
