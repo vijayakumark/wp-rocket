@@ -74,12 +74,14 @@ require( WP_ROCKET_INC_PATH	. 'compat.php' );
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
-    // Load translations
-    require( WP_ROCKET_FUNCTIONS_PATH	. 'l10n.php' );
+    // Load translations from the languages directory.
+    $locale = get_locale();
 
-    if ( ! rocket_load_alternative_textdomain() ) {
-        load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-    }
+    // This filter is documented in /wp-includes/l10n.php.
+    $locale = apply_filters( 'plugin_locale', $locale, 'rocket' );
+    load_textdomain( 'rocket', WP_LANG_DIR . '/plugins/wp-rocket-' . $locale . '.mo' );
+
+    load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
     // Nothing to do if autosave
     if ( defined( 'DOING_AUTOSAVE' ) ) {
