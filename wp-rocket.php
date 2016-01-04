@@ -61,7 +61,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.6.13' );
+    define( 'WP_ROCKET_LASTVERSION', '2.6.15' );
 }
 
 require( WP_ROCKET_INC_PATH	. 'compat.php' );
@@ -119,6 +119,7 @@ function rocket_init()
     require( WP_ROCKET_3RD_PARTY_PATH	. '3rd-party.php' );
     require( WP_ROCKET_COMMON_PATH		. 'admin-bar.php' );
     require( WP_ROCKET_COMMON_PATH		. 'updater.php' );
+    require( WP_ROCKET_COMMON_PATH		. 'emoji.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {

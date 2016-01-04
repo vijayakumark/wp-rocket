@@ -180,6 +180,26 @@ add_settings_field(
 	)
 );
 add_settings_field(
+	'rocket_emoji',
+	__( 'Emojis', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Replace emoji with default WordPress smileys.', 'rocket' ),
+			'label_for'    => 'emoji',
+			'label_screen' => __( 'Emoji:', 'rocket' )
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'emoji',
+			'description'  => __( '<strong>Note:</strong> By activating this option, you will reduce the number of external HTTP requests.', 'rocket' ),
+		),
+	)
+);
+add_settings_field(
 	'rocket_purge',
 	__( 'Clear Cache Lifespan', 'rocket' ),
 	'rocket_field',
