@@ -85,11 +85,11 @@ function get_rocket_config_file() {
 
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
-	foreach ( $options as $option => $value ) {
+	foreach ( $options as $option => $value ) {	
 		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'do_caching_mobile_files' || $option == 'secret_cache_key' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
-
+				
 		if ( $option == 'cache_reject_uri' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri() . '\';' . "\n";
 		}
@@ -118,7 +118,7 @@ function get_rocket_config_file() {
 	$buffer .= '$rocket_cache_mandatory_cookies = ' . var_export( get_rocket_cache_mandatory_cookies(), true ) . ';'  . "\n";
 	
 	$buffer .= '$rocket_cache_dynamic_cookies = ' . var_export( get_rocket_cache_dynamic_cookies(), true ) . ';'  . "\n";
-
+	
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$buffer .= '$rocket_url_no_dots = \'1\';';
@@ -308,32 +308,36 @@ function set_rocket_wp_cache_define( $turn_it_on )
  * @param string $ext (default: array('js','css') File extensions to minify
  * @return void
  */
-function rocket_clean_minify( $ext = array( 'js','css' ) )
-{
-	/**
-	 * Fires before the minify cache files are deleted
-	 *
-	 * @since 2.1
-	 *
-	 * @param string $ext File extensions to minify
-	*/
-	do_action( 'before_rocket_clean_minify', $ext );
-
-	if ( $files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/*.{' . implode( ',', (array)$ext ) . '}', GLOB_BRACE|GLOB_NOSORT ) ) {
-		foreach ( $files as $file ) { // no array map to use @
-			@unlink( $file );
+function rocket_clean_minify( $extensions = array( 'js','css' ) ) {
+	$blog_id = get_current_blog_id();
+	
+	foreach ( $extensions as $ext ) {
+		/**
+		 * Fires before the minify cache files are deleted
+		 *
+		 * @since 2.1
+		 *
+		 * @param string $ext File extensions to minify
+		*/
+		do_action( 'before_rocket_clean_minify', $ext );
+		
+		if ( $files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . $blog_id . '/*.' . $ext, GLOB_NOSORT ) ) {
+			foreach ( $files as $file ) { // no array map to use @
+				@unlink( $file );
+			}
 		}
+		
+		/**
+		 * Fires after the minify cache files was deleted
+		 *
+		 * @since 2.1
+		 *
+		 * @param string $ext File extensions to minify
+		*/
+		do_action( 'after_rocket_clean_minify', $ext );	
 	}
-
-	/**
-	 * Fires after the minify cache files was deleted
-	 *
-	 * @since 2.1
-	 *
-	 * @param string $ext File extensions to minify
-	*/
-	do_action( 'after_rocket_clean_minify', $ext );
 }
+
 
 /**
  * Delete one or several cache files
@@ -446,7 +450,7 @@ function rocket_clean_home( $lang = '' )
 			rocket_rrmdir( $dir );
 		}
 	}
-
+	
 	/**
 	 * Fires after the home cache file was deleted
 	 *
@@ -551,7 +555,7 @@ function rocket_clean_domain( $lang = '' )
 				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
 			}
 		}
-
+		
 		/**
 		 * Fires after all cache files was deleted
 		 *
