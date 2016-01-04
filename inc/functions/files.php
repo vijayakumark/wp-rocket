@@ -116,6 +116,8 @@ function get_rocket_config_file() {
 	}
 	
 	$buffer .= '$rocket_cache_mandatory_cookies = ' . var_export( get_rocket_cache_mandatory_cookies(), true ) . ';'  . "\n";
+	
+	$buffer .= '$rocket_cache_dynamic_cookies = ' . var_export( get_rocket_cache_dynamic_cookies(), true ) . ';'  . "\n";
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
