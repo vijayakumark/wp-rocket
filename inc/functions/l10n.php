@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+
 /**
  * Load translation from the languages directory 
  *
