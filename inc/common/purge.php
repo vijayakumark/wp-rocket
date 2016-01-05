@@ -418,7 +418,7 @@ function __rocket_purge_cache()
 }
 
 /**
- * Purge OPCache cache content in Admin Bar
+ * Purge OPCache content in Admin Bar
  *
  * @since 2.7
  */

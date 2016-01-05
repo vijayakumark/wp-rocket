@@ -64,13 +64,13 @@ add_settings_field(
 if ( function_exists( 'opcache_reset' ) ) {
     add_settings_field(
     	'rocket_purge_opcache',
-    	__( 'Purge OPcache content', 'rocket' ),
+    	__( 'Purge OPcache', 'rocket' ),
     	'rocket_button',
     	'rocket_tools',
     	'rocket_display_tools',
     	array(
             'button'=>array(
-            	'button_label' => __( 'Purge OPcache content', 'rocket' ),
+            	'button_label' => __( 'Purge OPcache', 'rocket' ),
             	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_opcache' ), 'rocket_purge_opcache' ),
             )
     	)
