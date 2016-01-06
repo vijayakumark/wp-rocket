@@ -107,11 +107,11 @@ function __rocket_lazyload_replace_callback( $matches ) {
  */
 remove_filter( 'the_content', 'convert_smilies' );
 remove_filter( 'the_excerpt', 'convert_smilies' );
-remove_filter( 'comment_text', 'convert_smilies' );
+remove_filter( 'comment_text', 'convert_smilies', 20 );
 
 add_filter( 'the_content', 'rocket_convert_smilies' );
 add_filter( 'the_excerpt', 'rocket_convert_smilies' );
-add_filter( 'comment_text', 'rocket_convert_smilies' );
+add_filter( 'comment_text', 'rocket_convert_smilies', 20 );
 
 /**
  * Convert text equivalent of smilies to images.
