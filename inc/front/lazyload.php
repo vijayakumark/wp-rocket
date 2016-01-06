@@ -105,13 +105,20 @@ function __rocket_lazyload_replace_callback( $matches ) {
  * @since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
  * @since 1.0
  */
-remove_filter( 'the_content', 'convert_smilies' );
-remove_filter( 'the_excerpt', 'convert_smilies' );
-remove_filter( 'comment_text', 'convert_smilies', 20 );
+add_action( 'init', 'rocket_lazyload_smilies' );
+function rocket_lazyload_smilies() {
+    if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true, 'smilies' ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+        return;
+    }
 
-add_filter( 'the_content', 'rocket_convert_smilies' );
-add_filter( 'the_excerpt', 'rocket_convert_smilies' );
-add_filter( 'comment_text', 'rocket_convert_smilies', 20 );
+    remove_filter( 'the_content', 'convert_smilies' );
+    remove_filter( 'the_excerpt', 'convert_smilies' );
+    remove_filter( 'comment_text', 'convert_smilies', 20 );
+
+    add_filter( 'the_content', 'rocket_convert_smilies' );
+    add_filter( 'the_excerpt', 'rocket_convert_smilies' );
+    add_filter( 'comment_text', 'rocket_convert_smilies', 20 );
+}
 
 /**
  * Convert text equivalent of smilies to images.
@@ -195,7 +202,7 @@ function rocket_translate_smiley( $matches ) {
 	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
 
 	// Don't LazyLoad if process is stopped for these reasons
-	if ( get_rocket_option( 'lazyload' ) && apply_filters( 'do_rocket_lazyload', true ) && ! is_feed() && ! is_preview() && ( ! defined( 'DONOTLAZYLOAD' ) || ! DONOTLAZYLOAD ) ) {
+	if ( ! is_feed() && ! is_preview() ) {
 		
 		/** This filter is documented in inc/front/lazyload.php */
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
