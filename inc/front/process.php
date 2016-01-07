@@ -185,8 +185,7 @@ ob_start( 'do_rocket_callback' );
  * @since 1.3.0 Add filter rocket_buffer
  * @since 1.0
  */
-function do_rocket_callback( $buffer )
-{
+function do_rocket_callback( $buffer ) {
 	/**
 	  * Allow to cache search results
 	  *
@@ -270,8 +269,7 @@ function do_rocket_callback( $buffer )
  *
  * @since 2.0
  */
-function rocket_serve_cache_file( $request_uri_path )
-{
+function rocket_serve_cache_file( $request_uri_path ) {
 	global $rocket_cache_filepath;
 	
 	// Check if cache file exist
@@ -305,8 +303,7 @@ function rocket_serve_cache_file( $request_uri_path )
  *
  * @source is_ssl() in /wp-includes/functions.php
  */
-function rocket_is_ssl()
-{
+function rocket_is_ssl() {
 	if ( isset($_SERVER['HTTPS']) ) {
 		if ( 'on' == strtolower($_SERVER['HTTPS']) ) {
 			return true;
@@ -328,11 +325,11 @@ function rocket_is_ssl()
  * @param bool $value
  */
 function rocket_define_donotminify_constants( $value ) {
-	if( ! defined( 'DONOTMINIFYCSS' ) ) {
+	if ( ! defined( 'DONOTMINIFYCSS' ) ) {
 		define( 'DONOTMINIFYCSS', (bool) $value );
 	}
 	
-	if( ! defined( 'DONOTMINIFYJS' ) ) {
+	if ( ! defined( 'DONOTMINIFYJS' ) ) {
 		define( 'DONOTMINIFYJS', (bool) $value );
 	}
 }
