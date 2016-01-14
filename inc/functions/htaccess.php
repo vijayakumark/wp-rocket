@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 function flush_rocket_htaccess( $force = false )
 {
 	global $is_apache;
-	
+
 	if ( ! $is_apache ) {
 		return;
 	}
@@ -51,7 +51,7 @@ function get_rocket_htaccess_marker()
 {
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
-	
+
 	/**
 	 * Add custom rules before rules added by WP Rocket
 	 *
@@ -60,19 +60,19 @@ function get_rocket_htaccess_marker()
 	 * @param string $before_marker The content of all rules
 	*/
 	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' );
-	
+
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_web_fonts_access();
 	$marker .= get_rocket_htaccess_files_match();
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
-	
+
 	/** This filter is documented in inc/front/process.php */
 	if ( apply_filters( 'do_rocket_generate_caching_files', true ) && ! is_rocket_generate_caching_mobile_files() ) {
-		$marker .= get_rocket_htaccess_mod_rewrite();	
+		$marker .= get_rocket_htaccess_mod_rewrite();
 	}
-	
+
 	/**
 	 * Add custom rules after rules added by WP Rocket
 	 *
@@ -81,9 +81,9 @@ function get_rocket_htaccess_marker()
 	 * @param string $after_marker The content of all rules
 	*/
 	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' );
-	
+
 	$marker .= '# END WP Rocket' . PHP_EOL;
-	
+
 	/**
 	 * Filter rules added by WP Rocket in .htaccess
 	 *
@@ -92,7 +92,7 @@ function get_rocket_htaccess_marker()
 	 * @param string $marker The content of all rules
 	*/
 	$marker = apply_filters( 'rocket_htaccess_marker', $marker );
-	
+
 	return $marker;
 }
 
@@ -109,12 +109,12 @@ function get_rocket_htaccess_mod_rewrite()
 	if ( is_multisite() ) {
 		return;
 	}
-	
+
 	// No rewrite rules for Korean
 	if( defined( 'WPLANG' ) && 'ko_KR' == WPLANG || 'ko_KR' == get_locale() ) {
 		return;
 	}
-	
+
 	// Get root base
 	$home_root = parse_url( home_url() );
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
@@ -150,7 +150,7 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules = '';
 	$gzip_rules = '';
 	$enc = '';
-	
+
 	/**
 	  * Allow to serve gzip cache file
 	  *
@@ -184,7 +184,7 @@ function get_rocket_htaccess_mod_rewrite()
 	if ( $cookies = get_rocket_cache_reject_cookies() ) {
 		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . PHP_EOL;
 	}
-	
+
 	if ( $uri = get_rocket_cache_reject_uri() ) {
 		$rules .= 'RewriteCond %{REQUEST_URI} !^(' . $uri . ')$ [NC]' . PHP_EOL;
 	}
@@ -250,6 +250,7 @@ function get_rocket_htaccess_mobile_rewritecond()
 /**
  * Rules for SSL requests
  *
+ * @since 2.7 Added rewrite condition for `%{HTTP:X-Forwarded-Proto}`.
  * @since 2.0
  *
  * @return string $rules Rules that will be printed
@@ -259,6 +260,8 @@ function get_rocket_htaccess_ssl_rewritecond()
 	$rules = 'RewriteCond %{HTTPS} on' . PHP_EOL;
 	$rules .= 'RewriteRule .* - [E=WPR_SSL:-https]' . PHP_EOL;
 	$rules .= 'RewriteCond %{SERVER_PORT} ^443$' . PHP_EOL;
+	$rules .= 'RewriteRule .* - [E=WPR_SSL:-https]' . PHP_EOL;
+	$rules .= 'RewriteCond %{HTTP:X-Forwarded-Proto} https' . PHP_EOL;
 	$rules .= 'RewriteRule .* - [E=WPR_SSL:-https]' . PHP_EOL;
 
 	/**
@@ -502,7 +505,7 @@ function get_rocket_htaccess_web_fonts_access() {
 	if ( false === get_rocket_option( 'cdn', false ) ) {
 		return;
 	}
-	
+
 	$rules  = '# Send CORS headers if browsers request them; enabled by default for images.' . PHP_EOL;
 	$rules  .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 	  $rules  .= '<IfModule mod_headers.c>' . PHP_EOL;
@@ -513,7 +516,7 @@ function get_rocket_htaccess_web_fonts_access() {
 	    $rules  .= '</FilesMatch>' . PHP_EOL;
 	  $rules  .= '</IfModule>' . PHP_EOL;
 	$rules  .= '</IfModule>' . PHP_EOL . PHP_EOL;
-	
+
 	$rules  .= '# Allow access to web fonts from all domains.' . PHP_EOL;
 	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">' . PHP_EOL;
 		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
