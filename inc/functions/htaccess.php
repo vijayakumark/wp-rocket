@@ -257,10 +257,8 @@ function get_rocket_htaccess_mobile_rewritecond()
  */
 function get_rocket_htaccess_ssl_rewritecond()
 {
-	$rules = 'RewriteCond %{HTTPS} on' . PHP_EOL;
-	$rules .= 'RewriteRule .* - [E=WPR_SSL:-https]' . PHP_EOL;
-	$rules .= 'RewriteCond %{SERVER_PORT} ^443$' . PHP_EOL;
-	$rules .= 'RewriteRule .* - [E=WPR_SSL:-https]' . PHP_EOL;
+	$rules  = 'RewriteCond %{HTTPS} on [OR]' . PHP_EOL;
+	$rules .= 'RewriteCond %{SERVER_PORT} ^443$ [OR]' . PHP_EOL;
 	$rules .= 'RewriteCond %{HTTP:X-Forwarded-Proto} https' . PHP_EOL;
 	$rules .= 'RewriteRule .* - [E=WPR_SSL:-https]' . PHP_EOL;
 
