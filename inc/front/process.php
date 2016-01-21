@@ -209,6 +209,7 @@ function do_rocket_callback( $buffer ) {
 		&& ( function_exists( 'is_404' ) && ! is_404() ) // Don't cache 404
 		&& ( function_exists( 'is_search' ) && ! is_search() || $rocket_cache_search ) // Don't cache search results
 		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE || $rocket_override_donotcachepage ) // Don't cache template that use this constant
+		&& function_exists( 'rocket_mkdir_p' )
 	) {
 		global $request_uri_path, $rocket_cache_filepath;
 
