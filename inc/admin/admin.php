@@ -11,7 +11,7 @@ function __rocket_settings_action_links( $actions ) {
 	if ( ! rocket_is_white_label() ) {
 		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://wp-rocket.me/support/', __( 'Support', 'rocket' ) ) );
 
-		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://docs.wp-rocket.me', __( 'Docs', 'rocket' ) ) );
+		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', get_rocket_documentation_url(), __( 'Docs', 'rocket' ) ) );
 	}
 
 	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ), __( 'Settings' ) ) );

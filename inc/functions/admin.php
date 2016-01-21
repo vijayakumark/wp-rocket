@@ -231,3 +231,19 @@ function rocket_sanitize_ua( $ua ) {
 function rocket_is_ssl_website() {
 	return 'https' === parse_url( home_url(), PHP_URL_SCHEME );
  }
+
+/**
+ * Get the WP Rocket documentation URL
+ *
+ * @since 2.7
+ */ 
+function get_rocket_documentation_url() {
+	$lang = get_locale();
+	$url  = 'http://docs.wp-rocket.me/';
+	
+	if ( 'fr_FR' === $lang ) {
+	    $url = 'http://fr.docs.wp-rocket.me/';
+	}
+	
+	return $url;
+ }
