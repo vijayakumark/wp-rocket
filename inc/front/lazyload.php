@@ -24,6 +24,7 @@ function rocket_lazyload_script() {
 /**
  * Replace Gravatar, thumbnails, images in post content and in widget text by LazyLoad
  *
+ * @since 2.7 Support for srcset attribute
  * @since 2.6 Add the get_image_tag filter
  * @since 2.2 Better regex pattern in a replace_callback
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
@@ -43,7 +44,7 @@ function rocket_lazyload_images( $html ) {
 		return $html;
 	}
 
-	$html = preg_replace_callback( '#<img([^>]*) src=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))([^>]*)>#', '__rocket_lazyload_replace_callback', $html );
+	$html = preg_replace_callback( '#<img([^>]*) src=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))([^>]*) srcset=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))([^>]*)>#', '__rocket_lazyload_replace_callback', $html );
 
 	return $html;
 }
@@ -51,6 +52,7 @@ function rocket_lazyload_images( $html ) {
 /**
  * Used to check if we have to LazyLoad this or not
  *
+ * @since 2.7	 Support for srcset attribute
  * @since 2.5.5	 Don't apply LazyLoad on images from WP Retina x2
  * @since 2.5	 Don't apply LazyLoad on all images from LayerSlider
  * @since 2.4.2	 Don't apply LazyLoad on all images from Media Grid
@@ -68,18 +70,37 @@ function __rocket_lazyload_replace_callback( $matches ) {
 	}
 
 	// TO DO - improve this code with a preg_match - it's ugly!!!!
-	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazysrc=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazyload=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false && strpos( $matches[1] . $matches[3], 'data-srcset=' ) === false ) {
+	$attributes1 	= ( isset( $matches[1] ) ? $matches[1] : '' );
+	$attributes2 	= ( isset( $matches[3] ) ? $matches[3] : '' );
+	$attributes3 	= ( isset( $matches[5] ) ? $matches[5] : '' );
+
+	$img_src 		= ( isset( $matches[2] ) ? $matches[2] : '' );
+	$img_srcset 	= ( isset( $matches[4] ) ? $matches[4] : '' );
+
+	$img_attributes =  $attributes1 . $attributes2 . $attributes3 ;
+	$img_url 		= $img_src . $img_srcset ;
+
+	if ( strpos( $img_attributes, 'data-no-lazy=' ) === false && strpos( $img_attributes, 'data-lazy-original=' ) === false && strpos( $img_attributes, 'data-lazy-src=' ) === false && strpos( $img_attributes, 'data-lazysrc=' ) === false && strpos( $img_attributes, 'data-src=' ) === false && strpos( $img_attributes, 'data-lazyload=' ) === false && strpos( $img_attributes, 'data-bgposition=' ) === false && strpos( $img_url, '/wpcf7_captcha/' ) === false && strpos( $img_url, 'timthumb.php?src' ) === false && strpos( $img_attributes, 'data-envira-src=' ) === false && strpos( $img_attributes, 'fullurl=' ) === false && strpos( $img_attributes, 'lazy-slider-img=' ) === false && strpos( $img_attributes, 'data-srcset=' ) === false ) {
 		
 		/**
 		 * Filter the LazyLoad placeholder on src attribute
 		 *
+		 * @since 2.7 support for srcset attribute
 		 * @since 2.6
 		 *
 		 * @param string Output that will be printed
 		*/
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
 		
-		$html = sprintf( '<img%1$s src="%4$s" data-lazy-src=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>', $matches[1], $matches[2], $matches[3], $placeholder );
+		$html = sprintf(
+					'<img%1$s src="%6$s" data-lazy-src=%2$s%3$s data-lazy-srcset=%4$s%5$s><noscript><img%1$s src=%2$s%3$s srcset=%4$s%5$s></noscript>',
+					$attributes1,
+					$img_src,
+					$attributes2,
+					$img_srcset,
+					$attributes3,
+					$placeholder
+				);
 
 		/**
 		 * Filter the LazyLoad HTML output on images
