@@ -266,7 +266,7 @@ function rocket_post_purge_urls_for_qtranslate( $urls )
 			foreach( $enabled_languages as $lang ) {
     			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 				    $urls[] = qtrans_convertURL( $url, $lang, true );
-				elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+				} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
     				$urls[] = qtranxf_convertURL( $url, $lang, true );
 				}
 			}

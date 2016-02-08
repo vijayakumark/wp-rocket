@@ -53,7 +53,7 @@ function get_rocket_wpml_langs_for_admin_bar() {
 /**
  * Get all langs to display in admin bar for qTranslate
  *
- * @since 2.6 add fork param
+ * @since 2.7 add fork param
  * @since 1.3.5
  *
  * @param string $fork qTranslate fork name
@@ -81,7 +81,7 @@ function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' )
             unset( $langlinks[ $_GET['lang'] ] );
             $langlinks = $currentlang + $langlinks;
 		}
-	} else ( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) ) {
+	} else if ( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) ) {
 		$currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
 		unset( $langlinks[ $_GET['lang'] ] );
 		$langlinks = $currentlang + $langlinks;
