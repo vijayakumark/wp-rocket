@@ -251,7 +251,7 @@ function rocket_clean_files_users( $urls )
 add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
 function rocket_post_purge_urls_for_qtranslate( $urls )
 {
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 
 		global $q_config;
 
@@ -264,7 +264,11 @@ function rocket_post_purge_urls_for_qtranslate( $urls )
 		// Add translate URLs
 		foreach( $urls as $url ) {
 			foreach( $enabled_languages as $lang ) {
-				$urls[] = qtrans_convertURL( $url, $lang, true );
+    			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+				    $urls[] = qtrans_convertURL( $url, $lang, true );
+				elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+    				$urls[] = qtranxf_convertURL( $url, $lang, true );
+				}
 			}
 		}
 	}

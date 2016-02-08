@@ -59,7 +59,7 @@ function rocket_admin_bar( $wp_admin_bar )
 
 			}
 
-		} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+		} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 
 			// Purge All
 			$wp_admin_bar->add_menu( array(
@@ -72,6 +72,8 @@ function rocket_admin_bar( $wp_admin_bar )
 			// Add submenu for each active langs
 			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 				$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+			} else if ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+				$langlinks = get_rocket_qtranslate_langs_for_admin_bar( 'x' );
 			} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 				$langlinks = get_rocket_polylang_langs_for_admin_bar();
 			}
@@ -170,7 +172,7 @@ function rocket_admin_bar( $wp_admin_bar )
 
 			}
 
-		} else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' )  ) {
+		} else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' )  ) {
 
 			$wp_admin_bar->add_menu( array(
 	            'parent' => 'wp-rocket',
@@ -181,6 +183,8 @@ function rocket_admin_bar( $wp_admin_bar )
 
 			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 				$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+			} else if ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+				$langlinks = get_rocket_qtranslate_langs_for_admin_bar( 'x' );
 			} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 				$langlinks = get_rocket_polylang_langs_for_admin_bar();
 			}

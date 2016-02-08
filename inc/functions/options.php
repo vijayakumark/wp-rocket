@@ -66,11 +66,11 @@ function update_rocket_option( $key, $value ) {
  */
 function is_rocket_post_excluded_option( $option ) {
 	if( is_home() ) {
-		$post_id = get_queried_object_id();
+		$post_id = (int) get_queried_object_id();
 	}
 	
 	if ( is_singular() ) {
-		$post_id = $GLOBALS['post']->ID;	
+		$post_id = (int) get_queried_object_id();
 	}
 	
 	return ( isset( $post_id ) ) ? get_post_meta( $post_id, '_rocket_exclude_' . $option, true ) : false;
