@@ -435,7 +435,7 @@ function get_rocket_htaccess_charset()
 function get_rocket_htaccess_files_match()
 {
 	$rules = '<IfModule mod_alias.c>' . PHP_EOL;
-		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|svg|svgz|txt|xsd|xsl|xml)$">' . PHP_EOL;
+		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">' . PHP_EOL;
 		    $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 		         $rules .= 'Header set X-Powered-By "WP Rocket/' . WP_ROCKET_VERSION . '"' . PHP_EOL;
 		         $rules .= 'Header unset Pragma' . PHP_EOL;
