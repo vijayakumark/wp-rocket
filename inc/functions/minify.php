@@ -231,7 +231,8 @@ function get_rocket_minify_excluded_external_js() {
 		'embed.finanzcheck.de',
 		'imagesrv.adition.com',
 		'js.juicyads.com',
-		'form.jotformeu.com'
+		'form.jotformeu.com',
+		'speakerdeck.com'
 	) );
 	
 	return $excluded_external_js;		
