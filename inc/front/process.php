@@ -124,6 +124,11 @@ if ( ! isset( $rocket_cache_mobile ) && (preg_match('#^.*(2.0\ MMP|240x320|400X2
 	return;
 }
 
+// Don't minify if using AMP
+if ( substr( $request_uri, -5, 5 ) === '/amp/' ) {
+    rocket_define_donotminify_constants( true );
+}
+
 // Check if dots should be replace by underscores
 $host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
 
