@@ -139,9 +139,11 @@ if ( isset( $rocket_cookie_hash )
 
 	// Get cache folder of host name
 	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
+	$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
 }
 else {
 	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
+	$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
 }
 
 $filename = 'index';
@@ -333,4 +335,15 @@ function rocket_define_donotminify_constants( $value ) {
 	if ( ! defined( 'DONOTMINIFYJS' ) ) {
 		define( 'DONOTMINIFYJS', (bool) $value );
 	}
+}
+
+/**
+ * Force lowercase on encoded url strings from different alphabets to prevent issues on some hostings
+ *
+ * @since 2.7
+ *
+ * @param string $matches
+ */
+function rocket_urlencode_lowercase( $matches ) {
+    return strtolower($matches[0]);
 }
