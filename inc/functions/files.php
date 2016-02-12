@@ -593,7 +593,7 @@ function rocket_clean_term( $term_id, $taxonomy_slug ) {
 
 	// Polylang
 	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$term_language = $GLOBALS['polylang']->model->get_term_language( $term_id, $taxonomy_slug );
+		$term_language = pll_get_term_language( $term_id, $taxonomy_slug );
 		$lang = ( is_object( $term_language ) ) ? $term_language->slug : false;
 	}
 	

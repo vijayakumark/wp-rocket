@@ -99,30 +99,42 @@ function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' )
  */
 function get_rocket_polylang_langs_for_admin_bar()
 {
-	global $polylang;
-	$langlinks   = array();
+
+    $langlinks   = array();
 	$currentlang = array();
-	$langs       = $polylang->model->get_languages_list();
+	$langs       = array();
 
-	foreach ( $langs as $lang ) {
+    if ( function_exists( 'PLL' ) ) {
+        $pll = PLL();
+    } else {
+        $pll = $GLOBALS['polylang'];
+    }
 
-		$img = empty($lang->flag) ? '' : (false !== strpos($lang->flag, 'img') ? $lang->flag . '&nbsp;' : $lang->flag);
+    if ( isset( $pll ) ) {
+        $langs = pll_languages_list();
+    }
 
-		if( isset( $polylang->curlang->slug ) && $lang->slug == $polylang->curlang->slug ) {
-			$currentlang[$lang->slug] = array(
-				'code'	 => $lang->slug,
-	            'anchor' => $lang->name,
-	            'flag'   => $img
-			);
-		} else {
-			$langlinks[$lang->slug] = array(
-	            'code'	 => $lang->slug,
-	            'anchor' => $lang->name,
-	            'flag'   => $img
-	        );
-		}
-
-	}
+    if ( ! empty( $langs ) ) {
+	    foreach ( $langs as $lang ) {
+        
+	    	$img = empty($lang->flag) ? '' : (false !== strpos($lang->flag, 'img') ? $lang->flag . '&nbsp;' : $lang->flag);
+        
+	    	if( isset( $pll->curlang->slug ) && $lang->slug == $pll->curlang->slug ) {
+	    		$currentlang[$lang->slug] = array(
+	    			'code'	 => $lang->slug,
+	                'anchor' => $lang->name,
+	                'flag'   => $img
+	    		);
+	    	} else {
+	    		$langlinks[$lang->slug] = array(
+	                'code'	 => $lang->slug,
+	                'anchor' => $lang->name,
+	                'flag'   => $img
+	            );
+	    	}
+        
+	    }
+    }
 
 	return $currentlang + $langlinks;
 }
@@ -168,7 +180,17 @@ function get_rocket_i18n_code()
 	}
 
 	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		return wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'slug' );
+        if ( function_exists( 'PLL' ) ) {
+            $pll = PLL();
+        } else {
+            $pll = $GLOBALS['polylang'];
+        }
+
+    	if ( isset( $pll ) ) {
+		    return wp_list_pluck( pll_languages_list(), 'slug' );
+        } else {
+            return false;
+        }
 	}
 }
 
@@ -221,7 +243,17 @@ function get_rocket_i18n_uri()
     		}
 		}
     } elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$urls = wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'home_url' );
+        if ( function_exists( 'PLL' ) ) {
+            $pll = PLL();
+        } else {
+            $pll = $GLOBALS['polylang'];
+        }
+        
+        if ( isset( $pll ) ) {
+		    $urls = wp_list_pluck( pll_languages_list(), 'home_url' );
+        } else {
+            $urls = home_url();
+        }
 	}
 
 	return $urls;
@@ -300,9 +332,15 @@ function get_rocket_i18n_subdomains()
 			$urls = get_rocket_i18n_uri();
 		}
 	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		if ( (int) $GLOBALS['polylang']->options['force_lang'] == 2 ) {
-			$urls = get_rocket_i18n_uri();
-		}
+    	if ( function_exists( 'PLL' ) ) {
+            $pll = PLL();
+        } else {
+            $pll = $GLOBALS['polylang'];
+        }
+
+        if ( isset( $pll ) && (int) $pll->options['force_lang'] == 2 ) {
+            $urls = get_rocket_i18n_uri();
+        }
 	}
 
 	return $urls;
@@ -328,8 +366,16 @@ function get_rocket_i18n_home_url( $lang = '' ) {
 		$url = qtrans_convertURL( home_url(), $lang, true );
     } elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 		$url = qtranxf_convertURL( home_url(), $lang, true );
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) && ! empty( $GLOBALS['polylang']->options['force_lang'] ) ) {
-		$url = pll_home_url( $lang );
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+    	if ( function_exists( 'PLL' ) ) {
+            $pll = PLL();
+        } else {
+            $pll = $GLOBALS['polylang'];
+        }
+        
+    	if ( ! empty( $pll->options['force_lang'] ) ) {
+		    $url = pll_home_url( $lang );
+        }
 	}
 
 	return $url;
@@ -378,10 +424,18 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	}
 
 	// Polylang
-	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) && is_object( $GLOBALS['polylang']->model ) && $translations = $GLOBALS['polylang']->model->get_translations( 'page', $post_id ) ) {
-		foreach ( $translations as $post_id ) {
-			$urls[] = parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
-		}
+	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+    	if ( function_exists( 'PLL' ) && is_object( PLL()->model ) ) {
+            $translations = pll_get_post_translations( $post_id );
+        } else if ( is_object( $GLOBALS['polylang']->model ) ) {
+            $translations = $GLOBALS['polylang']->model->get_translations( 'page', $post_id );
+        }
+
+        if ( ! empty( $translations ) ) {
+		    foreach ( $translations as $post_id ) {
+		    	$urls[] = parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+		    }
+        }
 	}
 	
 	if ( trim( $path, '/' ) != '' ) {
