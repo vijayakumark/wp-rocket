@@ -7,8 +7,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * @since 2.0.0
  */
 add_action( 'admin_notices', 'rocket_bad_deactivations' );
-function rocket_bad_deactivations()
-{
+function rocket_bad_deactivations() {
 	global $current_user;
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && $msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' ) ) {
@@ -78,8 +77,7 @@ function rocket_bad_deactivations()
  * @since 1.3.0
  */
 add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
-function rocket_warning_plugin_modification()
-{
+function rocket_warning_plugin_modification() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && rocket_valid_key() ) {
 
@@ -104,8 +102,7 @@ function rocket_warning_plugin_modification()
  * @since 1.3.0
  */
 add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );
-function rocket_plugins_to_deactivate()
-{
+function rocket_plugins_to_deactivate() {
 	$plugins_to_deactivate = array();
 
 	// Deactivate all plugins who can cause conflicts with WP Rocket
@@ -218,8 +215,7 @@ function rocket_plugins_to_deactivate()
  * @since 1.0
  */
 add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
-function rocket_warning_using_permalinks()
-{
+function rocket_warning_using_permalinks() {
 	/** This filter is documented in inc/admin-bar.php */
 	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ! $GLOBALS['wp_rewrite']->using_permalinks()
@@ -240,8 +236,7 @@ function rocket_warning_using_permalinks()
  * @since 2.0
  */
 add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
-function rocket_warning_wp_config_permissions()
-{
+function rocket_warning_wp_config_permissions() {
 	$config_file = rocket_find_wpconfig_path();
 
 	if ( ! ( 'plugins.php' == $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) 
@@ -287,8 +282,7 @@ function rocket_warning_wp_config_permissions()
  */
 
 add_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
-function rocket_warning_advanced_cache_permissions()
-{
+function rocket_warning_advanced_cache_permissions() {
 	$advanced_cache_file =  WP_CONTENT_DIR . '/advanced-cache.php';
 
 	/** This filter is documented in inc/admin-bar.php */
@@ -325,8 +319,7 @@ function rocket_warning_advanced_cache_permissions()
  * @since 2.2
  */
 add_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
-function rocket_warning_advanced_cache_not_ours()
-{
+function rocket_warning_advanced_cache_not_ours() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( ! ( 'plugins.php' == $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) 
 		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
@@ -349,8 +342,7 @@ function rocket_warning_advanced_cache_not_ours()
  * @since 1.0
  */
 add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
-function rocket_warning_htaccess_permissions()
-{
+function rocket_warning_htaccess_permissions() {
 	global $is_apache;
 	$htaccess_file =  get_home_path() . '.htaccess';
 
@@ -382,8 +374,7 @@ function rocket_warning_htaccess_permissions()
  * @since 2.0.2
  */
 add_action( 'admin_notices', 'rocket_warning_config_dir_permissions' );
-function rocket_warning_config_dir_permissions()
-{
+function rocket_warning_config_dir_permissions() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( ! is_writable( WP_ROCKET_CONFIG_PATH ) )
@@ -410,8 +401,7 @@ function rocket_warning_config_dir_permissions()
  * @since 1.0
  */
 add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
-function rocket_warning_cache_dir_permissions()
-{
+function rocket_warning_cache_dir_permissions() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( ! is_writable( WP_ROCKET_CACHE_PATH ) )
@@ -438,8 +428,7 @@ function rocket_warning_cache_dir_permissions()
  * @since 2.1
  */
 add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
-function rocket_warning_minify_cache_dir_permissions()
-{
+function rocket_warning_minify_cache_dir_permissions() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( ! is_writable( WP_ROCKET_MINIFY_CACHE_PATH ) )
@@ -467,8 +456,7 @@ function rocket_warning_minify_cache_dir_permissions()
  * @since 2.2
  */
 add_action( 'admin_notices', 'rocket_thank_you_license' );
-function rocket_thank_you_license()
-{
+function rocket_thank_you_license() {
 	if ( '1' == get_rocket_option( 'license' ) ) {
 		$options = get_option( WP_ROCKET_SLUG );
 		$options['license'] = time();
@@ -483,4 +471,58 @@ function rocket_thank_you_license()
 		</div>
 	<?php
 	}
+}
+
+/**
+ * Add a message about Imagify on the "Upload New Media" screen and WP Rocket options page.
+ *
+ * @since 2.7
+ */
+add_action( 'post-plupload-upload-ui', '__rocket_imagify_notice' );
+add_action( 'admin_notices', '__rocket_imagify_notice' );
+function __rocket_imagify_notice() {
+	$current_screen  = get_current_screen();
+	
+	// Don't duplicate the notice on the "Upload New Media" screen
+	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'media' === $current_screen->base ) ) {
+		return;
+	}
+	
+	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base ) ) {
+		return;
+	}
+	
+	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
+	
+	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes ) ) {
+		return;
+	}
+
+	$modal_url = add_query_arg(
+		array(
+			'tab'       => 'plugin-information',
+			'plugin'    => 'imagify',
+			'TB_iframe' => true,
+			'width'     => 722,
+			'height'    => 949
+		),
+		admin_url( 'plugin-install.php' )
+	);
+
+	$dismiss_url = wp_nonce_url(
+		admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ),
+		'rocket_ignore_' . __FUNCTION__
+	);
+	?>
+
+	<div class="updated">
+		<a href="<?php echo $dismiss_url; ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+
+		<p class="msg">
+			<?php _e( 'Speed up your website and boost your SEO by using the best new Image Optimizer free plugin.', 'rocket' ); ?>
+			<a href="<?php echo $modal_url; ?>" class="button button-primary tgm-plugin-update-modal"><?php esc_html_e( 'Install Imagify', 'rocket' ); ?></a>
+		</p>
+	</div>
+
+	<?php
 }
