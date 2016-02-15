@@ -258,7 +258,7 @@ function get_rocket_cache_mandatory_cookies() {
 	$cookies = apply_filters( 'rocket_cache_mandatory_cookies', $cookies );
 	$cookies = array_filter( $cookies );
 	
-	$cookies = implode( '|', array_filter( $cookies ) );
+	$cookies = implode( '|', $cookies );
 	return $cookies;
 }
 
