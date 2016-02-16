@@ -363,6 +363,17 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 			}
 		}
 	}
+	
+	/**
+	 * Filter all CNAMES.
+	 *
+	 * @since 2.7
+	 *
+	 * @param array $hosts List of CNAMES.
+	*/
+	$hosts = apply_filters( 'rocket_cdn_cnames', $hosts );
+	$hosts = array_filter( $hosts );
+	
 	return $hosts;
 }
 
