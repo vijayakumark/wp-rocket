@@ -139,11 +139,9 @@ if ( isset( $rocket_cookie_hash )
 
 	// Get cache folder of host name
 	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
-	$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
 }
 else {
 	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
-	$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
 }
 
 $filename = 'index';
@@ -174,6 +172,7 @@ if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
 }
 
 // Caching file path
+$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
 $rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
 // Serve the cache file if exist
@@ -345,5 +344,5 @@ function rocket_define_donotminify_constants( $value ) {
  * @param string $matches
  */
 function rocket_urlencode_lowercase( $matches ) {
-    return strtolower($matches[0]);
-}
+    return strtolower( $matches[0] );
+} 
