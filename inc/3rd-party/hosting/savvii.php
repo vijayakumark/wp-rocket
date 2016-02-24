@@ -40,8 +40,8 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_savvii' );
 function rocket_clean_savvii() {
 	$plugin = new \Savvii\CacheFlusherPlugin();
 	
-	if ( method_exists( $plugin, 'flush' ) ) {
-		$plugin->flush();	
+	if ( method_exists( $plugin, 'domainflush' ) ) {
+		$plugin->domainflush();	
 	}
 }
 
