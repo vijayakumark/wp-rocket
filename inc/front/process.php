@@ -82,6 +82,7 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['lp-variation-id'] ) )
 	&& ( ! isset( $_GET['lang'] ) )
 	&& ( ! isset( $_GET['s'] ) )
+	&& ( ! isset( $_GET['age-verified'] ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotminify_constants( true );
