@@ -478,17 +478,12 @@ function rocket_thank_you_license() {
  *
  * @since 2.7
  */
-add_action( 'post-plupload-upload-ui', '__rocket_imagify_notice' );
 add_action( 'admin_notices', '__rocket_imagify_notice' );
 function __rocket_imagify_notice() {
 	$current_screen  = get_current_screen();
-	
-	// Don't duplicate the notice on the "Upload New Media" screen
-	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'media' === $current_screen->base ) ) {
-		return;
-	}
-	
-	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base ) ) {
+		
+	// Add the notice only on the "WP Rocket" settings, "Media Library" & "Upload New Media" screens
+	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base && 'media' !== $current_screen->base && 'upload' !== $current_screen->base  ) ) {
 		return;
 	}
 	
@@ -522,10 +517,10 @@ function __rocket_imagify_notice() {
 			<img src="<?php echo WP_ROCKET_ADMIN_UI_IMG_URL ?>logo-imagify.png" srcset="<?php echo WP_ROCKET_ADMIN_UI_IMG_URL ?>logo-imagify.svg 2x" alt="Imagify" width="150" height="18">
 		</p>
 		<p class="msg">
-			<?php _e( 'Speed up your website and boost your SEO by using the best new Image Optimizer free plugin.', 'rocket' ); ?>
+			<?php _e( 'Speed up your website and boost your SEO by reducing image file sizes without loosing quality with Imagify.', 'rocket' ); ?>
 		</p>
 		<p class="cta">
-			<a href="<?php echo $modal_url; ?>" class="button button-primary tgm-plugin-update-modal"><?php esc_html_e( 'Install Imagify', 'rocket' ); ?></a>
+			<a href="<?php echo $modal_url; ?>" class="button button-primary tgm-plugin-update-modal"><?php esc_html_e( 'Install Imagify for Free', 'rocket' ); ?></a>
 		</p>
 	</div>
 

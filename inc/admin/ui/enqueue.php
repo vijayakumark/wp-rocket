@@ -84,6 +84,7 @@ function __rocket_admin_print_styles() {
  * @since 2.7
  */
 add_action( 'admin_print_styles-media-new.php', '__rocket_enqueue_modal_plugin' );
+add_action( 'admin_print_styles-upload.php', '__rocket_enqueue_modal_plugin' );
 add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, '__rocket_enqueue_modal_plugin' );
 function __rocket_enqueue_modal_plugin() {
     wp_enqueue_style( 'thickbox' );
