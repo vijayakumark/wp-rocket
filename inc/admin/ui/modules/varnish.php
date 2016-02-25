@@ -1,6 +1,13 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
+/**
+  * Allow to display the "Varnish" tab in the settings page
+  *
+  * @since 2.7
+  *
+  * @param bool true will display the "Varnish" tab
+ */
 if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) :
 
 add_settings_section( 'rocket_display_main_options', 'Varnish', '__return_false', 'rocket_varnish' );

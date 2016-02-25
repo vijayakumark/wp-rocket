@@ -510,11 +510,15 @@ function rocket_display_options() {
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
-				<div class="rkt-tab" id="tab_varnish">
-					<p class="description varnish_description"><?php _e( 'The following options are for hosting with Varnish cache system.', 'rocket' ); ?><br/>
-					<?php _e( 'If you don’t know if Varnish is installed on your server, you can ignore these settings.', 'rocket' ); ?></p>
-					<?php do_settings_sections( 'rocket_varnish' ); ?>
-				</div>
+				<?php 
+				/** This filter is documented in inc/admin/ui/modules/vanrish.php */	
+				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
+					<div class="rkt-tab" id="tab_varnish">
+						<p class="description varnish_description"><?php _e( 'The following options are for hosting with Varnish cache system.', 'rocket' ); ?><br/>
+						<?php _e( 'If you don’t know if Varnish is installed on your server, you can ignore these settings.', 'rocket' ); ?></p>
+						<?php do_settings_sections( 'rocket_varnish' ); ?>
+					</div>
+				<?php } ?>
 				<?php $class_hidden = !defined( 'WP_RWL' ) ? ' hidden' : ''; ?>
 				<div class="rkt-tab<?php echo $class_hidden; ?>" id="tab_whitelabel"><?php do_settings_sections( 'rocket_white_label' ); ?></div>
 				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'rocket_tools' ); ?></div>
