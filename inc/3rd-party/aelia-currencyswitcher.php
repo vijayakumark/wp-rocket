@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  *
  * @since 2.7
  */
-if ( class_exists( '\Aelia\WC\CurrencySwitcher\Definitions' ) ) :
+if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) :
 	/*
 	 * Update .htaccess & config files when the Geolocation option is updated
 	 *
@@ -31,8 +31,8 @@ if ( class_exists( '\Aelia\WC\CurrencySwitcher\Definitions' ) ) :
 	add_filter( 'rocket_cache_dynamic_cookies'	 , '_rocket_add_aelia_currencyswitcher_dynamic_cookies' );
 	add_filter( 'rocket_cache_mandatory_cookies' , '_rocket_add_aelia_currencyswitcher_mandatory_cookie' );
 	function _rocket_add_aelia_currencyswitcher_dynamic_cookies( $cookies ) {
-		$cookies[] = \Aelia\WC\CurrencySwitcher\Definitions::SESSION_CUSTOMER_COUNTRY;
-		$cookies[] = \Aelia\WC\CurrencySwitcher\Definitions::USER_CURRENCY;
+		$cookies[] = 'aelia_cs_recalculate_cart_totals';
+		$cookies[] = 'aelia_cs_selected_currency';
 		return $cookies;
 	}
 
@@ -40,7 +40,7 @@ if ( class_exists( '\Aelia\WC\CurrencySwitcher\Definitions' ) ) :
 		$acs_options = get_option( 'wc_aelia_currency_switcher' );
 
 		if ( ! empty( $acs_options['ipgeolocation_enabled'] ) ) {
-			$cookies[] = \Aelia\WC\CurrencySwitcher\Definitions::USER_CURRENCY;
+			$cookies[] = 'aelia_cs_selected_currency';
 		}
 
 		return $cookies;
