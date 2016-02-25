@@ -214,20 +214,20 @@ function do_rocket_callback( $buffer ) {
 	) {
 		global $request_uri_path, $rocket_cache_filepath;
 
-		// This hook is used for:
-		// - Add width and height attributes on images
-		// - Deferred JavaScript files
-		// - DNS Prefechting
-		// - Minification HTML/CSS/JavaScript
-		// - CDN
-		// - LazyLoad
-		$buffer = apply_filters( 'rocket_buffer', $buffer );
-		
 		$footprint = '';
-		$is_html   = true;
+		$is_html   = false;
 		
-		if( ! preg_match( '/(<\/html>)/i', $buffer ) ) {
-			$is_html = false;
+		if( preg_match( '/(<\/html>)/i', $buffer ) ) {
+			// This hook is used for:
+			// - Add width and height attributes on images
+			// - Deferred JavaScript files
+			// - DNS Prefechting
+			// - Minification HTML/CSS/JavaScript
+			// - CDN
+			// - LazyLoad
+			$buffer = apply_filters( 'rocket_buffer', $buffer );
+			
+			$is_html = true;
 		}
 		
 		/**
