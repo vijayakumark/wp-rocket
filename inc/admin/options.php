@@ -483,7 +483,11 @@ function rocket_display_options() {
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
+				<?php 
+				/** This filter is documented in inc/admin/ui/modules/vanrish.php */	
+				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
 				<a href="#tab_varnish" class="nav-tab"><?php _e( 'Varnish', 'rocket' ); ?></a>
+				<?php } ?>
 				<?php if( defined( 'WP_RWL' ) ) { ?>
 					<a href="#tab_whitelabel" class="nav-tab"><?php _e( 'White Label', 'rocket' ); ?></a>
 				<?php } ?>
