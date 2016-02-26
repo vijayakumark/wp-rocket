@@ -238,11 +238,12 @@ function rocket_is_ssl_website() {
  * @since 2.7
  */ 
 function get_rocket_documentation_url() {
-	
-	$langs  = array( 'fr_FR' => 'fr.' ); // Add new languages here
+	$langs  = array( 
+		'fr_FR' => 'fr.' 
+	);
 	$lang   = get_locale();
 	$prefix = isset( $langs[ $lang ] ) ? $langs[ $lang ] : '';
-	$url    = "http://{$prefix}docs.wp-rocket.me/";
+	$url    = "http://{$prefix}docs.wp-rocket.me/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin";
 
 	return $url;
 }

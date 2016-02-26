@@ -222,7 +222,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			'parent' => 'wp-rocket',
 			'id'     => 'docs',
 			'title'  => __( 'Documentation', 'rocket' ),
-			'href'   => 'http://docs.wp-rocket.me',
+			'href'   => get_rocket_documentation_url(),
 		));
 		
 		// Go to WP Rocket Support
