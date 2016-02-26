@@ -30,21 +30,6 @@ if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) :
 	add_filter( 'rocket_htaccess_mod_rewrite'	 , '__return_false' );
 	add_filter( 'rocket_cache_dynamic_cookies'	 , '_rocket_add_aelia_currencyswitcher_dynamic_cookies' );
 	add_filter( 'rocket_cache_mandatory_cookies' , '_rocket_add_aelia_currencyswitcher_mandatory_cookie' );
-	function _rocket_add_aelia_currencyswitcher_dynamic_cookies( $cookies ) {
-		$cookies[] = 'aelia_cs_recalculate_cart_totals';
-		$cookies[] = 'aelia_cs_selected_currency';
-		return $cookies;
-	}
-
-	function _rocket_add_aelia_currencyswitcher_mandatory_cookie( $cookies ) {
-		$acs_options = get_option( 'wc_aelia_currency_switcher' );
-
-		if ( ! empty( $acs_options['ipgeolocation_enabled'] ) ) {
-			$cookies[] = 'aelia_cs_selected_currency';
-		}
-
-		return $cookies;
-	}
 endif;
 
 // Add cookies when we activate the plugin
@@ -73,4 +58,22 @@ function __rocket_deactivate_aelia_currencyswitcher() {
 
 	// Regenerate the config file
 	rocket_generate_config_file();
+}
+
+// Add the Aelia Currency Switcher cookies to generate caching files depending to their values
+function _rocket_add_aelia_currencyswitcher_dynamic_cookies( $cookies ) {
+	$cookies[] = 'aelia_cs_recalculate_cart_totals';
+	$cookies[] = 'aelia_cs_selected_currency';
+	return $cookies;
+}
+
+// Add the Aelia Currency Switcher to the list of mandatory cookies before to generate caching files
+function _rocket_add_aelia_currencyswitcher_mandatory_cookie( $cookies ) {
+	$acs_options = get_option( 'wc_aelia_currency_switcher' );
+
+	if ( ! empty( $acs_options['ipgeolocation_enabled'] ) ) {
+		$cookies[] = 'aelia_cs_selected_currency';
+	}
+
+	return $cookies;
 }
