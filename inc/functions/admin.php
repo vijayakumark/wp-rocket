@@ -238,12 +238,11 @@ function rocket_is_ssl_website() {
  * @since 2.7
  */ 
 function get_rocket_documentation_url() {
-	$lang = get_locale();
-	$url  = 'http://docs.wp-rocket.me/';
 	
-	if ( 'fr_FR' === $lang ) {
-	    $url = 'http://fr.docs.wp-rocket.me/';
-	}
-	
+	$langs  = array( 'fr_FR' => 'fr.' ); // Add new languages here
+	$lang   = get_locale();
+	$prefix = isset( $langs[ $lang ] ) ? $langs[ $lang ] : '';
+	$url    = "http://{$prefix}docs.wp-rocket.me/";
+
 	return $url;
- }
+}
