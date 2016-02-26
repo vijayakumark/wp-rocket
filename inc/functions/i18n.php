@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
@@ -14,7 +14,8 @@ function get_rocket_wpml_langs_for_admin_bar() {
 
 	foreach ( $sitepress->get_active_languages() as $lang ) {
 		// Get flag
-		$flag = $sitepress->get_flag($lang['code']);
+		$flag = $sitepress->get_flag( $lang['code'] );
+        
         if ( $flag->from_template ) {
             $wp_upload_dir = wp_upload_dir();
             $flag_url = $wp_upload_dir['baseurl'] . '/flags/' . $flag->flag;
@@ -65,9 +66,9 @@ function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' ) {
 
 	foreach( $q_config['enabled_languages'] as $lang ) {
 
-		$langlinks[$lang] = array(
+		$langlinks[ $lang ] = array(
             'code'		=> $lang,
-            'anchor'    => $q_config['language_name'][$lang],
+            'anchor'    => $q_config['language_name'][ $lang ],
             'flag'      => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][$lang] . '" alt="' . $q_config['language_name'][$lang] . '" width="18" height="12" />'
         );
 
@@ -102,12 +103,11 @@ function get_rocket_polylang_langs_for_admin_bar() {
 
     $pll   = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
     $langs = $pll->model->get_languages_list();
-   
+
     if ( ! empty( $langs ) ) {
 	    foreach ( $langs as $lang ) {
-        
-	    	$img = empty($lang->flag) ? '' : (false !== strpos($lang->flag, 'img') ? $lang->flag . '&nbsp;' : $lang->flag);
-        
+	    	$img = empty( $lang->flag ) ? '' : ( false !== strpos( $lang->flag, 'img' ) ? $lang->flag . '&nbsp;' : $lang->flag );
+
 	    	if( isset( $pll->curlang->slug ) && $lang->slug == $pll->curlang->slug ) {
 	    		$currentlang[$lang->slug] = array(
 	    			'code'	 => $lang->slug,
@@ -121,7 +121,6 @@ function get_rocket_polylang_langs_for_admin_bar() {
 	                'flag'   => $img
 	            );
 	    	}
-        
 	    }
     }
 
@@ -180,13 +179,13 @@ function get_rocket_i18n_code() {
  */
 function get_rocket_i18n_host() {
 	$langs_host = array();
-	
+
 	if ( $langs = get_rocket_i18n_uri() ) {
 		foreach ( $langs as $lang ) {
 			$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 		}
 	}
-	
+
 	return $langs_host;
 }
 
@@ -220,7 +219,7 @@ function get_rocket_i18n_uri() {
 		}
     } elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
         $pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
-                
+
         if ( isset( $pll ) ) {
 		    $urls = wp_list_pluck( $pll->model->get_languages_list(), 'home_url' );
         }
@@ -251,7 +250,7 @@ function get_rocket_i18n_to_preserve( $current_lang ) {
 	// Unset current lang to the preserve dirs
 	$langs = array_flip( $langs );
 	if( isset( $langs[$current_lang] ) ) {
-		unset( $langs[$current_lang] );	
+		unset( $langs[$current_lang] );
 	}
 	$langs = array_flip( $langs );
 
@@ -332,7 +331,7 @@ function get_rocket_i18n_home_url( $lang = '' ) {
 		$url = qtranxf_convertURL( home_url(), $lang, true );
 	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
     	$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
-        
+
     	if ( ! empty( $pll->options['force_lang'] ) ) {
 		    $url = pll_home_url( $lang );
         }
@@ -355,11 +354,11 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	$urls  = array();
 	$path  = parse_url( get_permalink( $post_id ), PHP_URL_PATH );
 	$langs = get_rocket_i18n_code();
-	
+
 	if ( empty( $path ) ) {
 		return $urls;
 	}
-	
+
 	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		foreach( $langs as $lang ) {
@@ -397,11 +396,11 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		    }
         }
 	}
-	
+
 	if ( trim( $path, '/' ) != '' ) {
-		$urls[] = $path . $regex;	
+		$urls[] = $path . $regex;
 	}
-	
+
 	$urls = array_unique( $urls );
 
 	return $urls;
