@@ -61,29 +61,24 @@ function get_rocket_wpml_langs_for_admin_bar() {
  */
 function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' ) {
 	global $q_config;
+
 	$langlinks   = array();
 	$currentlang = array();
 
 	foreach( $q_config['enabled_languages'] as $lang ) {
 
 		$langlinks[ $lang ] = array(
-            'code'		=> $lang,
-            'anchor'    => $q_config['language_name'][ $lang ],
-            'flag'      => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][$lang] . '" alt="' . $q_config['language_name'][$lang] . '" width="18" height="12" />'
+            'code'   => $lang,
+            'anchor' => $q_config['language_name'][ $lang ],
+            'flag'   => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][ $lang ] . '" alt="' . $q_config['language_name'][ $lang ] . '" width="18" height="12" />'
         );
 
 	}
 
-    if ( $fork === 'x' ) {
-        if ( isset( $_GET['lang'] ) && qtranxf_isEnabled( $_GET['lang'] ) ) {
-		    $currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
-            unset( $langlinks[ $_GET['lang'] ] );
-            $langlinks = $currentlang + $langlinks;
-		}
-	} else if ( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) ) {
-		$currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
-		unset( $langlinks[ $_GET['lang'] ] );
-		$langlinks = $currentlang + $langlinks;
+    if ( isset( $_GET['lang'] ) && ( qtrans_isEnabled( $_GET['lang'] ) || ( 'x' === $fork && qtranxf_isEnabled( $_GET['lang'] ) ) ) ) {
+	    $currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
+        unset( $langlinks[ $_GET['lang'] ] );
+        $langlinks = $currentlang + $langlinks;
 	}
 
 	return $langlinks;
@@ -95,34 +90,39 @@ function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' ) {
  * @since 2.2
  *
  * @return array $langlinks List of active languages
- */
+*/
 function get_rocket_polylang_langs_for_admin_bar() {
-    $langlinks   = array();
+	global $polylang;
+
+	$langlinks   = array();
 	$currentlang = array();
 	$langs       = array();
+	$img         = '';
 
-    $pll   = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
-    $langs = $pll->model->get_languages_list();
+	$pll   = function_exists( 'PLL' ) ? PLL() : $polylang;
+	$langs = $pll->model->get_languages_list();
 
-    if ( ! empty( $langs ) ) {
-	    foreach ( $langs as $lang ) {
-	    	$img = empty( $lang->flag ) ? '' : ( false !== strpos( $lang->flag, 'img' ) ? $lang->flag . '&nbsp;' : $lang->flag );
+	if ( ! empty( $langs ) ) {
+		foreach ( $langs as $lang ) {
+			if ( ! empty( $lang->flag ) ) {
+				$img = false !== strpos( $lang->flag, 'img' ) ? $lang->flag . '&nbsp;' : $lang->flag;
+			}
 
-	    	if( isset( $pll->curlang->slug ) && $lang->slug == $pll->curlang->slug ) {
-	    		$currentlang[$lang->slug] = array(
-	    			'code'	 => $lang->slug,
-	                'anchor' => $lang->name,
-	                'flag'   => $img
-	    		);
-	    	} else {
-	    		$langlinks[$lang->slug] = array(
-	                'code'	 => $lang->slug,
-	                'anchor' => $lang->name,
-	                'flag'   => $img
-	            );
-	    	}
-	    }
-    }
+			if( isset( $pll->curlang->slug ) && $lang->slug == $pll->curlang->slug ) {
+				$currentlang[ $lang->slug ] = array(
+					'code'   => $lang->slug,
+					'anchor' => $lang->name,
+					'flag'   => $img
+				);
+			} else {
+				$langlinks[ $lang->slug ] = array(
+					'code'   => $lang->slug,
+					'anchor' => $lang->name,
+					'flag'   => $img
+				);
+			}
+		}
+	}
 
 	return $currentlang + $langlinks;
 }
