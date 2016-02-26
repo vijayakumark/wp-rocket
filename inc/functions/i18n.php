@@ -68,17 +68,23 @@ function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' ) {
 	foreach( $q_config['enabled_languages'] as $lang ) {
 
 		$langlinks[ $lang ] = array(
-            'code'   => $lang,
-            'anchor' => $q_config['language_name'][ $lang ],
-            'flag'   => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][ $lang ] . '" alt="' . $q_config['language_name'][ $lang ] . '" width="18" height="12" />'
-        );
+			'code'   => $lang,
+			'anchor' => $q_config['language_name'][ $lang ],
+			'flag'   => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][ $lang ] . '" alt="' . $q_config['language_name'][ $lang ] . '" width="18" height="12" />'
+		);
 
 	}
 
-    if ( isset( $_GET['lang'] ) && ( qtrans_isEnabled( $_GET['lang'] ) || ( 'x' === $fork && qtranxf_isEnabled( $_GET['lang'] ) ) ) ) {
-	    $currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
-        unset( $langlinks[ $_GET['lang'] ] );
-        $langlinks = $currentlang + $langlinks;
+	if ( $fork === 'x' ) {
+		if ( isset( $_GET['lang'] ) && qtranxf_isEnabled( $_GET['lang'] ) ) {
+			$currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
+			unset( $langlinks[ $_GET['lang'] ] );
+			$langlinks = $currentlang + $langlinks;
+		}
+	} else if ( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) ) {
+		$currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
+		unset( $langlinks[ $_GET['lang'] ] );
+		$langlinks = $currentlang + $langlinks;
 	}
 
 	return $langlinks;
