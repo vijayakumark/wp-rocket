@@ -19,6 +19,7 @@ p.description.file-error{color:#F00}
 .rkt-imagify-notice .rkt-cross .dashicons{position:relative; top:2px; left:1px; transition:all .275s}
 .rkt-imagify-notice .rkt-cross:hover{background:#2e3243}
 .rkt-imagify-notice .rkt-cross:hover .dashicons{color:#FFF}
+.rkt-imagify-notice .logo, .rkt-imagify-notice .cta{-webkit-flex-shrink: 0;-ms-flex-negative: 0;flex-shrink: 0;}
 .rkt-imagify-notice .logo{width:160px; text-align:right; padding:0 15px; line-height:0.8}
 .rkt-imagify-notice .msg{width:100%; padding:0 15px}
 .rkt-imagify-notice .cta{width:200px}
