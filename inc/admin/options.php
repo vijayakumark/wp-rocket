@@ -883,7 +883,6 @@ function rocket_settings_callback( $inputs ) {
  *
  * @since 2.1
  */
-
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
 function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
@@ -891,7 +890,16 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 	
 	// This values do not need to clean the cache domain
-	$removed = array( 'purge_cron_interval' => true, 'purge_cron_unit' => true, 'wl_plugin_name' => true, 'wl_plugin_URI' => true, 'wl_author' => true, 'wl_author_URI' => true, 'wl_description' => true, 'wl_plugin_slug' => true );
+	$removed = array( 
+		'purge_cron_interval' => true, 
+		'purge_cron_unit'     => true, 
+		'wl_plugin_name'      => true, 
+		'wl_plugin_URI'       => true, 
+		'wl_author'           => true, 
+		'wl_author_URI'       => true, 
+		'wl_description'      => true, 
+		'wl_plugin_slug'      => true 
+	);
 
 	// Create 2 arrays to compare
 	$oldvalue_diff 	= array_diff_key( $oldvalue, $removed );
@@ -929,9 +937,14 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_minify = ( isset( $cf_old_settings[1] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[1] : 7;
 		set_rocket_cloudflare_minify( $cf_minify );
 		
-		// Deactive Rocket Loader to prevent conflicts
+		// Deactivate Rocket Loader to prevent conflicts
 		$cf_async = ( isset( $cf_old_settings[2] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[2] : false;
 		set_rocket_cloudflare_async( $cf_async );
+	}
+	
+	// Regenerate advanced-cache.php file
+	if ( ! empty( $_POST ) && ( $oldvalue['do_caching_mobile_files'] != $value['do_caching_mobile_files'] || $oldvalue['do_caching_mobile_files'] != $value['do_caching_mobile_files'] ) ) {
+		rocket_generate_advanced_cache_file();
 	}
 	
 	// Update .htaccess file rules
