@@ -8,9 +8,6 @@ if ( function_exists( 'autoptimize_do_cachepurged_action' ) ) :
  *
  * @since 2.7
  */
-add_action( 'autoptimize_action_cachepurged', '__rocket_clear_cache_after_autoptimize' );
-function __rocket_clear_cache_after_autoptimize() {
-	rocket_clean_domain();
-}
+add_action( 'autoptimize_action_cachepurged', 'rocket_clean_domain' );
 
 endif;
