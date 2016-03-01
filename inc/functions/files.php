@@ -78,7 +78,16 @@ function get_rocket_config_file() {
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 
 	if ( apply_filters( 'rocket_override_min_documentRoot', false ) ) {
-		$buffer .= '$min_documentRoot = \'' . ABSPATH . '\';' . "\n";
+		/**
+		 * Filter the Document Root path to use during the minification
+		 *
+		 * @since 2.7
+		 *
+		 * @param string The Document Root path
+		*/
+		$min_documentRoot = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+		
+		$buffer .= '$min_documentRoot = \'' . $min_documentRoot . '\';' . "\n";
 	}
 
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
