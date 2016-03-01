@@ -28,7 +28,7 @@ function rocket_sanitize_css( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext=='css' ? trim( $file ) : false;
+	return ( 'css' === $ext || 'php' === $ext ) ? trim( $file ) : false;
 }
 
 /**
@@ -40,7 +40,7 @@ function rocket_sanitize_js( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext == 'js' ? trim( $file ) : false;
+	return ( 'js' === $ext || 'php' === $ext ) ? trim( $file ) : false;
 }
 
 /**
@@ -73,7 +73,7 @@ function rocket_remove_url_protocol( $url, $no_dots=false )
  */
 function rocket_add_url_protocol( $url ) {
 	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
-		$url = 'http://' . ltrim( $url, '//' );
+		$url = set_url_scheme( $url );
 	}
 	return $url;
 }
@@ -112,7 +112,7 @@ function get_rocket_parse_url( $url )
 	}
 
 	$url    = parse_url( $url );
-	$host   = isset( $url['host'] ) ? $url['host'] : '';
+	$host   = isset( $url['host'] ) ? strtolower( $url['host'] ) : '';
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
 	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
 	$query  = isset( $url['query'] ) ? $url['query'] : '';

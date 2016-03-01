@@ -1,12 +1,12 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'basic' );
+add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
 add_settings_field(
 	'rocket_lazyload',
 	__( 'Lazyload:', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(
@@ -33,7 +33,7 @@ add_settings_field(
 	'rocket_minify',
 	 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(
@@ -95,18 +95,20 @@ add_settings_field(
 );
 // Mobile plugins list
 $mobile_plugins = array(
-	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>',
+	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free Version)</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
 	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
 	'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>'
+	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>',
+	'<a href="https://wordpress.org/plugins/device-theme-switcher/" target="_blank">Device Theme Switcher</a>'
 );
+
 add_settings_field(
 	'rocket_mobile',
 	__( 'Mobile cache:', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(
@@ -116,16 +118,44 @@ add_settings_field(
 			'label_screen' => __( 'Mobile cache:', 'rocket' ),
 		),
 		array(
+			'parent'	   => 'cache_mobile',
+			'type'         => 'checkbox',
+			'label'        => __( 'Create a caching file for mobile visitors.', 'rocket' ),
+			'name'         => 'do_caching_mobile_files'
+		),
+		array(
+			'parent'	   => 'cache_mobile',
+			'type'         => 'helper_description',
+			'name'         => 'mobile',
+			'description'  => __( 'Are you using a dedicated mobile theme or <code>wp_is_mobile()</code>? If so, you should activate this option to serve a specific caching file for your mobile visitors.', 'rocket' ),
+		),
+		array(
+			'parent'	   => 'cache_mobile',
 			'type'         => 'helper_warning',
 			'name'         => 'mobile',
-			'description'  => wp_sprintf( __( 'Don\'t turn on this option if you use one of these plugins: %l.', 'rocket' ), $mobile_plugins ),
+			'description'  => wp_sprintf( __( 'If you are using one of these plugins, you must activate this option: %l', 'rocket' ), $mobile_plugins ),
 		),
+	)
+);
+add_settings_field(
+	'rocket_feed',
+	__( 'Feed cache:', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
+		array(
+			'type'		   => 'checkbox',
+			'label'		   => __( 'Enable caching for WordPress feeds.', 'rocket' ),
+			'label_for'	   => 'cache_feed',
+			'label_screen' => __( 'Feed cache:', 'rocket' ),
+		)
 	)
 );
 add_settings_field(
 	'rocket_logged_user',
 	__( 'Logged in user cache:', 'rocket' ),
-	'rocket_field', 'basic',
+	'rocket_field', 'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		'type'         => 'checkbox',
@@ -138,20 +168,42 @@ add_settings_field(
 	'rocket_ssl',
 	__( 'SSL cache:', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		'type'         => 'checkbox',
 		'label'        => __('Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
 		'label_for'    => 'cache_ssl',
 		'label_screen' => __( 'SSL cache:', 'rocket' ),
+		'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
+		'readonly'	   => rocket_is_ssl_website()
+	)
+);
+add_settings_field(
+	'rocket_emoji',
+	__( 'Emojis', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Replace emoji with default WordPress smileys.', 'rocket' ),
+			'label_for'    => 'emoji',
+			'label_screen' => __( 'Emoji:', 'rocket' )
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'emoji',
+			'description'  => __( '<strong>Note:</strong> By activating this option, you will reduce the number of external HTTP requests.', 'rocket' ),
+		),
 	)
 );
 add_settings_field(
 	'rocket_purge',
 	__( 'Clear Cache Lifespan', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(

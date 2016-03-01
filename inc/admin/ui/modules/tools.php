@@ -1,14 +1,14 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
+add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'rocket_tools' );
 
 if ( ! rocket_is_white_label() ) {
 	add_settings_field(
 		'rocket_do_beta',
 		__( 'Beta Tester', 'rocket' ),
 		'rocket_field',
-		'tools',
+		'rocket_tools',
 		'rocket_display_tools',
 		array(
 			array(
@@ -30,7 +30,7 @@ add_settings_field(
 	'rocket_purge_all',
 	__( 'Clear cache', 'rocket' ),
 	'rocket_button',
-	'tools',
+	'rocket_tools',
 	'rocket_display_tools',
 	array(
 		'button'=>array(
@@ -47,7 +47,7 @@ add_settings_field(
 	'rocket_preload',
 	__( 'Preload cache', 'rocket' ),
 	'rocket_button',
-	'tools',
+	'rocket_tools',
 	'rocket_display_tools',
 	array(
         'button'=>array(
@@ -61,11 +61,27 @@ add_settings_field(
 	)
 );
 
+if ( function_exists( 'opcache_reset' ) ) {
+    add_settings_field(
+    	'rocket_purge_opcache',
+    	__( 'Purge OPcache', 'rocket' ),
+    	'rocket_button',
+    	'rocket_tools',
+    	'rocket_display_tools',
+    	array(
+            'button'=>array(
+            	'button_label' => __( 'Purge OPcache', 'rocket' ),
+            	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_opcache' ), 'rocket_purge_opcache' ),
+            )
+    	)
+    );
+}
+
 add_settings_field(
 	'rocket_export_options',
 	__( 'Settings Exporter', 'rocket' ),
 	'rocket_field',
-	'tools',
+	'rocket_tools',
 	'rocket_display_tools',
 	array( 'type'=>'rocket_export_form', 'name'=>'export' )
 
@@ -75,7 +91,7 @@ add_settings_field(
 	'rocket_import_options',
 	__( 'Settings Importer', 'rocket' ),
 	'rocket_field',
-	'tools',
+	'rocket_tools',
 	'rocket_display_tools',
 	array( 'type'=>'rocket_import_upload_form' )
 
@@ -87,7 +103,7 @@ if ( current_user_can( 'update_plugins' ) ) {
 		'rocket_rollback',
 		__( 'Update Rollback', 'rocket' ),
 		'rocket_button',
-		'tools',
+		'rocket_tools',
 		'rocket_display_tools',
 		array(
 	        'button'=>array(

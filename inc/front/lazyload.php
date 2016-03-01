@@ -16,9 +16,9 @@ function rocket_lazyload_script() {
 	}
 
 	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-	$lazyload_url = get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload.' . WP_ROCKET_LAZYLOAD_JS_VERSION . $suffix . '.js' );
+	$lazyload_url = get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload.' . WP_ROCKET_LAZYLOAD_JS_VERSION . $suffix . '.js', array( 'all', 'css_and_js', 'js' ) );
 	
-	echo '<script data-no-minify="1">(function(w,d){function a(){var b=d.createElement("script");b.async=!0;b.src="' . $lazyload_url .'";var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)}w.attachEvent?w.attachEvent("onload",a):w.addEventListener("load",a,!1)})(window,document);</script>';
+	echo '<script data-no-minify="1" data-cfasync="false">(function(w,d){function a(){var b=d.createElement("script");b.async=!0;b.src="' . $lazyload_url .'";var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)}w.attachEvent?w.attachEvent("onload",a):w.addEventListener("load",a,!1)})(window,document);</script>';
 }
 
 /**
@@ -68,7 +68,7 @@ function __rocket_lazyload_replace_callback( $matches ) {
 	}
 
 	// TO DO - improve this code with a preg_match - it's ugly!!!!
-	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazysrc=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazyload=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false && strpos( $matches[1] . $matches[3], 'srcset=' ) === false ) {
+	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazysrc=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazyload=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false && strpos( $matches[1] . $matches[3], 'data-srcset=' ) === false ) {
 		
 		/**
 		 * Filter the LazyLoad placeholder on src attribute
@@ -79,8 +79,10 @@ function __rocket_lazyload_replace_callback( $matches ) {
 		*/
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
 		
-		$html = sprintf( '<img%1$s src="%4$s" data-lazy-src=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>', $matches[1], $matches[2], $matches[3], $placeholder );
-
+		$html = sprintf( '<img%1$s src="%4$s" data-lazy-src=%2$s%3$s>', $matches[1], $matches[2], $matches[3], $placeholder );
+		
+		$html_noscript = sprintf( '<noscript><img%1$s src=%2$s%3$s></noscript>', $matches[1], $matches[2], $matches[3] );
+		
 		/**
 		 * Filter the LazyLoad HTML output on images
 		 *
@@ -89,8 +91,8 @@ function __rocket_lazyload_replace_callback( $matches ) {
 		 * @param string $html Output that will be printed
 		*/
 		$html = apply_filters( 'rocket_lazyload_html', $html, true );
-
-		return $html;
+				
+		return $html . $html_noscript;
 	} else {
 		return $matches[0];
 	}
@@ -105,13 +107,20 @@ function __rocket_lazyload_replace_callback( $matches ) {
  * @since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
  * @since 1.0
  */
-remove_filter( 'the_content', 'convert_smilies' );
-remove_filter( 'the_excerpt', 'convert_smilies' );
-remove_filter( 'comment_text', 'convert_smilies' );
+add_action( 'init', 'rocket_lazyload_smilies' );
+function rocket_lazyload_smilies() {
+    if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true, 'smilies' ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+        return;
+    }
 
-add_filter( 'the_content', 'rocket_convert_smilies' );
-add_filter( 'the_excerpt', 'rocket_convert_smilies' );
-add_filter( 'comment_text', 'rocket_convert_smilies' );
+    remove_filter( 'the_content', 'convert_smilies' );
+    remove_filter( 'the_excerpt', 'convert_smilies' );
+    remove_filter( 'comment_text', 'convert_smilies', 20 );
+
+    add_filter( 'the_content', 'rocket_convert_smilies' );
+    add_filter( 'the_excerpt', 'rocket_convert_smilies' );
+    add_filter( 'comment_text', 'rocket_convert_smilies', 20 );
+}
 
 /**
  * Convert text equivalent of smilies to images.
@@ -195,7 +204,7 @@ function rocket_translate_smiley( $matches ) {
 	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
 
 	// Don't LazyLoad if process is stopped for these reasons
-	if ( get_rocket_option( 'lazyload' ) && apply_filters( 'do_rocket_lazyload', true ) && ! is_feed() && ! is_preview() && ( ! defined( 'DONOTLAZYLOAD' ) || ! DONOTLAZYLOAD ) ) {
+	if ( ! is_feed() && ! is_preview() ) {
 		
 		/** This filter is documented in inc/front/lazyload.php */
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
@@ -265,4 +274,18 @@ function __rocket_deactivate_lazyload_on_specific_posts() {
 	if ( is_rocket_post_excluded_option( 'lazyload_iframes' ) ) {
 		add_filter( 'do_rocket_lazyload_iframes', '__return_false' );
 	}
+}
+
+/**
+ * Compatibility with images with srcset attribute
+ *
+ * @since 2.7
+ */
+add_filter( 'rocket_lazyload_html', '__rocket_lazyload_on_srcset' );
+function __rocket_lazyload_on_srcset( $html ) {
+	if( preg_match( '/srcset=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
+		$html = str_replace( 'srcset=', 'data-lazy-srcset=', $html );
+	}
+	
+	return $html;
 }

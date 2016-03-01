@@ -1,12 +1,12 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_support', __( 'Support', 'rocket' ), '__return_false', 'support' );
+add_settings_section( 'rocket_display_support', __( 'Support', 'rocket' ), '__return_false', 'rocket_support' );
 add_settings_field(
 	'rocket_support_summary',
 	__( 'Summary', 'rocket' ),
 	'rocket_field',
-	'support',
+	'rocket_support',
 	'rocket_display_support',
 	array(
 		array(
@@ -20,7 +20,7 @@ add_settings_field(
 	'rocket_support_description',
 	__( 'Description', 'rocket' ),
 	'rocket_field',
-	'support',
+	'rocket_support',
 	'rocket_display_support',
 	array(
 		array(
@@ -38,11 +38,11 @@ add_settings_field(
 	'rocket_support_documentation_validation',
 	null,
 	'rocket_field',
-	'support',
+	'rocket_support',
 	'rocket_display_support',
 	array(
 		'type'         => 'checkbox',
-		'label'        => sprintf( __( 'I\'ve read the <a href="%s" target="_blank">documentation</a>, and I agree to allow WP Rocket to automatically detect my WordPress version and list of enabled plugins when I submit this form.', 'rocket' ), 'http://docs.wp-rocket.me/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin' ),
+		'label'        => sprintf( __( 'I\'ve read the <a href="%s" target="_blank">documentation</a>, and I agree to allow WP Rocket to automatically detect my WordPress version and list of enabled plugins when I submit this form.', 'rocket' ), get_rocket_documentation_url() ),
 		'label_for'    => 'support_documentation_validation'
 	)
 );
@@ -50,7 +50,7 @@ add_settings_field(
 	'rocket_support_submit',
 	null,
 	'rocket_button',
-	'support',
+	'rocket_support',
 	'rocket_display_support',
 	array(
 		'button' => array(

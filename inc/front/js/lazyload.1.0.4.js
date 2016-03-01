@@ -16,8 +16,11 @@
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
 
 	var hasClass = function(ele, cls) {
-		var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-		return ele.className.match(reg) && reg;
+		/*var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+		return ele.className.match(reg) && reg;*/
+
+		var reg = new RegExp('(^|\s)' + cls + '\d(\s|$)');
+		return ele.className.match(cls);
 	};
 
 	var addClass = function(ele, cls) {
@@ -236,10 +239,12 @@
 		};
 
 		var changeIframeSrc = function(elem, src){
-			try {
-				elem.contentWindow.location.replace(src);
-			} catch(e){
-				elem.setAttribute('src', src);
+			if(elem.getAttribute('src') != src){
+				/*try {
+					elem.contentWindow.location.replace(src);
+				} catch(e){*/
+					elem.setAttribute('src', src);
+				//}
 			}
 		};
 
@@ -287,14 +292,14 @@
 
 					/*if(sizes){
 						if(isAuto){*/
-							addClass(elem, lazyRocketsConfig.autosizesClass);
+							//addClass(elem, lazyRocketsConfig.autosizesClass);
 						//} else {
 							//elem.setAttribute('sizes', sizes);
 						//}
 					//}
 
-					//srcset = elem.getAttribute(lazyRocketsConfig.srcsetAttr);
-					srcset = null;
+					srcset = elem.getAttribute('data-lazy-srcset');
+					//srcset = null;
 					
 					src = elem.getAttribute('data-lazy-src') || elem.getAttribute('data-lazy-original');
 
@@ -328,7 +333,9 @@
 							}
 						}
 					}*/
-
+					if(srcset){
+						elem.setAttribute('srcset', srcset);
+					}
 					if(src){
 						if(regIframe.test(elem.nodeName)){
 							changeIframeSrc(elem, src);
@@ -387,15 +394,20 @@
 				preloadExpand = Math.round(defaultExpand * lazyRocketsConfig.expFactor);
 
 				addEventListener('scroll', throttledCheckElements, true);
-
 				addEventListener('resize', throttledCheckElements, true);
 
 				if(window.MutationObserver){
 					new MutationObserver( prepareThrottledCheckElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
+					
+					new MutationObserver( throttledCheckElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
 				} else {
 					docElem.addEventListener('DOMNodeInserted', prepareThrottledCheckElements, true);
 					docElem.addEventListener('DOMAttrModified', prepareThrottledCheckElements, true);
 					setInterval(prepareThrottledCheckElements, 999);
+
+					docElem.addEventListener('DOMNodeInserted', throttledCheckElements, true);
+					docElem.addEventListener('DOMAttrModified', throttledCheckElements, true);
+					setInterval(throttledCheckElements, 999);
 				}
 
 				addEventListener('hashchange', prepareThrottledCheckElements, true);

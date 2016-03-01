@@ -3,11 +3,12 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.6-beta6
-Code Name: Yavin
+Version: 2.7
+Code Name: Hoth
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
+Licence: GPLv2
 
 Text Domain: rocket
 Domain Path: languages
@@ -18,7 +19,7 @@ Copyright 2013-2015 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.6-beta6' );
+define( 'WP_ROCKET_VERSION'             , '2.7' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -39,6 +40,7 @@ define( 'WP_ROCKET_COMMON_PATH'         , realpath( WP_ROCKET_INC_PATH . 'common
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_API_PATH'      		, realpath( WP_ROCKET_INC_PATH . 'api' ) . '/' );
 define( 'WP_ROCKET_VENDORS_PATH'      	, realpath( WP_ROCKET_INC_PATH . 'vendors' ) . '/' );
+define( 'WP_ROCKET_3RD_PARTY_PATH'   	, realpath( WP_ROCKET_INC_PATH . '3rd-party' ) . '/' );
 define( 'WP_ROCKET_CONFIG_PATH'         , WP_CONTENT_DIR . '/wp-rocket-config/' );
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/min/' );
@@ -47,7 +49,7 @@ define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'        , WP_ROCKET_FRONT_URL . 'js/' );
 define( 'WP_ROCKET_LAB_JS_VERSION'      , '2.0.3' );
-define( 'WP_ROCKET_LAZYLOAD_JS_VERSION' , '1.0.2' );
+define( 'WP_ROCKET_LAZYLOAD_JS_VERSION' , '1.0.4' );
 define( 'WP_ROCKET_ADMIN_URL'           , WP_ROCKET_INC_URL . 'admin/' );
 define( 'WP_ROCKET_ADMIN_UI_URL'        , WP_ROCKET_ADMIN_URL . 'ui/' );
 define( 'WP_ROCKET_ADMIN_UI_JS_URL'     , WP_ROCKET_ADMIN_UI_URL . 'js/' );
@@ -59,7 +61,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.5.12' );
+    define( 'WP_ROCKET_LASTVERSION', '2.6.16' );
 }
 
 require( WP_ROCKET_INC_PATH	. 'compat.php' );
@@ -72,7 +74,13 @@ require( WP_ROCKET_INC_PATH	. 'compat.php' );
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
-    // Load translations
+    // Load translations from the languages directory.
+    $locale = get_locale();
+
+    // This filter is documented in /wp-includes/l10n.php.
+    $locale = apply_filters( 'plugin_locale', $locale, 'rocket' );
+    load_textdomain( 'rocket', WP_LANG_DIR . '/plugins/wp-rocket-' . $locale . '.mo' );
+
     load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
     // Nothing to do if autosave
@@ -104,9 +112,14 @@ function rocket_init()
     require( WP_ROCKET_FUNCTIONS_PATH	. 'bots.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'htaccess.php' );
+    require( WP_ROCKET_FUNCTIONS_PATH	. 'varnish.php' );
     require( WP_ROCKET_INC_PATH			. 'deprecated.php' );
     require( WP_ROCKET_FRONT_PATH		. 'plugin-compatibility.php' );
+    require( WP_ROCKET_FRONT_PATH		. 'theme-compatibility.php' );
+    require( WP_ROCKET_3RD_PARTY_PATH	. '3rd-party.php' );
     require( WP_ROCKET_COMMON_PATH		. 'admin-bar.php' );
+    require( WP_ROCKET_COMMON_PATH		. 'updater.php' );
+    require( WP_ROCKET_COMMON_PATH		. 'emoji.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {
@@ -122,7 +135,7 @@ function rocket_init()
 			require( WP_ROCKET_COMMON_PATH 	. 'cloudflare.php' );
 		}
 
-        if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
+        if ( is_multisite() && defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 	        require( WP_ROCKET_INC_PATH . '/domain-mapping.php' );
         }
     }
@@ -153,6 +166,8 @@ function rocket_init()
         if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'lazyload.php' );
         }
+        
+        require( WP_ROCKET_FRONT_PATH . 'protocol.php' );
     }
 
     // You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode
@@ -175,10 +190,11 @@ register_deactivation_hook( __FILE__, 'rocket_deactivation' );
 function rocket_deactivation()
 {
     if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) {
+      	global $is_apache;
         $causes = array();
 
         // .htaccess problem
-        if ( $GLOBALS['is_apache'] && ! is_writable( get_home_path() . '.htaccess' ) ) {
+        if ( $is_apache && ! is_writable( get_home_path() . '.htaccess' ) ) {
             $causes[] = 'htaccess';
         }
 
@@ -213,6 +229,7 @@ function rocket_deactivation()
 
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
+	delete_site_transient( 'update_wprocket_response' );
 }
 
 /*
@@ -254,9 +271,6 @@ function rocket_activation()
 
 	// Create advanced-cache.php file
 	rocket_generate_advanced_cache_file();
-
-	// Create config file
-	rocket_generate_config_file();
 	
 	// Update customer key & licence.
 	wp_remote_get( WP_ROCKET_WEB_API . 'activate-licence.php', array( 'blocking' => false ) );
