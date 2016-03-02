@@ -1,6 +1,6 @@
 {
   "name": "wp-rocket",
-  "version": "2.5.0-1",
+  "version": "2.7.0",
   "private": true,
   "devDependencies": {
     "grunt": "~0.4.5",
