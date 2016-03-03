@@ -16,6 +16,7 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'i18n/wpml.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'i18n/polylang.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/aelia-currencyswitcher.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/woocommerce-currency-converter-widget.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/edd-software-licencing.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'age-verify.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'autoptimize.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'eu-cookie-law.php' );
