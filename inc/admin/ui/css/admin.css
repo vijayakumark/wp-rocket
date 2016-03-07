@@ -20,9 +20,9 @@ p.description.file-error{color:#F00}
 .rkt-imagify-notice .rkt-cross:hover{background:#2e3243}
 .rkt-imagify-notice .rkt-cross:hover .dashicons{color:#FFF}
 .rkt-imagify-notice .rkt-imagify-logo, .rkt-imagify-notice .rkt-imagify-cta{-webkit-flex-shrink: 0;-ms-flex-negative: 0;flex-shrink: 0;}
-.rkt-imagify-notice .rkt-imagify-logo{width:160px; text-align:right; padding:0 15px; line-height:0.8}
-.rkt-imagify-notice .rkt-imagify-msg{width:100%; padding:0 15px}
-.rkt-imagify-notice .rkt-imagify-cta{width:200px}
+.rkt-imagify-notice .rkt-imagify-logo{width:160px!important; /* !important because of a dirtugly WP Engine code */ text-align:right; padding:0 15px; line-height:0.8}
+.rkt-imagify-notice .rkt-imagify-msg{width:100%!important; /* !important because of a dirtugly WP Engine code */ padding:0 15px}
+.rkt-imagify-notice .rkt-imagify-cta{width:200px;!important; /* !important because of a dirtugly WP Engine code */}
 .rkt-imagify-notice .button.button{height:auto; font-weight:600; font-size:14px; box-shadow:0 3px 0 rgba(0,0,0,.15); border:0 none; padding:4px 18px; background:#40B1D0; text-shadow:1px 1px 1px rgba(0,0,0,.2)}
 @media (max-width:650px){.rkt-imagify-notice{-webkit-flex-wrap:wrap; -ms-flex-wrap:wrap; flex-wrap:wrap}
 .rkt-imagify-notice .rkt-imagify-msg, 
