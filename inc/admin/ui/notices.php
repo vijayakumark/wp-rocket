@@ -513,13 +513,13 @@ function __rocket_imagify_notice() {
 	<div class="updated rkt-imagify-notice">
 		<a href="<?php echo $dismiss_url; ?>" class="rkt-cross"><span class="dashicons dashicons-no"></span></a>
 		
-		<p class="logo">
+		<p class="rkt-imagify-logo">
 			<img src="<?php echo WP_ROCKET_ADMIN_UI_IMG_URL ?>logo-imagify.png" srcset="<?php echo WP_ROCKET_ADMIN_UI_IMG_URL ?>logo-imagify.svg 2x" alt="Imagify" width="150" height="18">
 		</p>
-		<p class="msg">
+		<p class="rkt-imagify-msg">
 			<?php _e( 'Speed up your website and boost your SEO by reducing image file sizes without loosing quality with Imagify.', 'rocket' ); ?>
 		</p>
-		<p class="cta">
+		<p class="rkt-imagify-cta">
 			<a href="<?php echo $modal_url; ?>" class="button button-primary tgm-plugin-update-modal"><?php esc_html_e( 'Install Imagify for Free', 'rocket' ); ?></a>
 		</p>
 	</div>
