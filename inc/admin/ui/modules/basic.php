@@ -181,16 +181,16 @@ add_settings_field(
 );
 add_settings_field(
 	'rocket_emoji',
-	__( 'Emojis', 'rocket' ),
+	__( 'Emojis:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(
 			'type'         => 'checkbox',
-			'label'        => __( 'Replace emoji with default WordPress smileys.', 'rocket' ),
+			'label'        => __( 'Replace emojis with default WordPress smileys.', 'rocket' ),
 			'label_for'    => 'emoji',
-			'label_screen' => __( 'Emoji:', 'rocket' )
+			'label_screen' => 'Emojis'
 		),
 		array(
 			'type'         => 'helper_description',
