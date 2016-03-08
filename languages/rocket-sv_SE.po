@@ -1,15 +1,16 @@
 # Copyright (C) 2015 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Anders Eriksson <eriksson021@gmail.com>, 2014-2015
+# Malin Andersson, 2014-2015
+# Malin Andersson, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-05-28 16:16:27+00:00\n"
-"PO-Revision-Date: 2015-05-28 17:12+0000\n"
-"Last-Translator: Anders Eriksson <eriksson021@gmail.com>\n"
-"Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/wp-rocket/language/sv_SE/)\n"
+"POT-Creation-Date: 2015-05-28 16:46:51+00:00\n"
+"PO-Revision-Date: 2015-06-15 17:52+0000\n"
+"Last-Translator: Malin Andersson\n"
+"Language-Team: Swedish (Sweden) (http://www.transifex.com/wp-media/wp-rocket/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -219,7 +220,7 @@ msgid ""
 "Well, well, looks like you've got yourself a \"nulled\" version! We don't "
 "provide support to hackers or pirates, so you will need a valid license to "
 "proceed."
-msgstr "Ser man på, det ser ut som du har en \"nulled\" version ! Vi ger inte support till hackare eller pirater , så du behöver en giltig licens för att fortsätta."
+msgstr "Ser man på, det ser ut som du har en \"nulled\" version ! Vi ger inte support till hackare eller pirater, så du behöver en giltig licens för att fortsätta."
 
 #: inc/admin/ui/enqueue.php:43
 msgid ""
@@ -420,7 +421,7 @@ msgstr "JS-fils minifiering"
 msgid ""
 "<strong>Note:</strong> We combine the minified files in little groups "
 "<strong>to ensure the best compatibility and better performance</strong>."
-msgstr "<strong> Obs! </strong> Vi kombinerar de minifierade filerna i små grupper<strong>för att säkerställa bästa kompatibilitet och bättre prestanda</strong>."
+msgstr "<strong> Obs! </strong> Vi kombinerar de minifierade filerna i små grupper <strong>för att säkerställa bästa kompatibilitet och bättre prestanda</strong>."
 
 #: inc/admin/ui/modules/advanced.php:163
 msgid ""
