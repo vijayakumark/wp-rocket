@@ -54,7 +54,7 @@ function rocket_field( $args ) {
 		$readonly			= isset( $args['readonly'] ) && $args['readonly'] ? ' readonly="readonly" disabled="disabled"' : '';
 		$cols 				= isset( $args['cols'] ) ? (int) $args['cols'] : 50;
 		$rows 				= isset( $args['rows'] ) ? (int) $args['rows'] : 5;
-
+		
 		if( ! isset( $args['fieldset'] ) || 'start' == $args['fieldset'] ){
 			echo '<fieldset class="fieldname-'.sanitize_html_class( $args['name'] ).' fieldtype-'.sanitize_html_class( $args['type'] ).'">';
 		}
@@ -68,11 +68,11 @@ function rocket_field( $args ) {
 				if ( $value === false ) {
 					$value = $default;
 				}
-
+				
 				if ( 'cloudflare_api_key' == $args['name'] && defined( 'WP_ROCKET_CF_API_KEY' ) ) {
 					$value = WP_ROCKET_CF_API_KEY;
-				}
-
+				} 
+				
 				$value 			= esc_attr( $value );
 				$number_options = $args['type']=='number' ? ' min="0" class="small-text"' : '';
 				$autocomplete 	= in_array( $args['name'], array( 'consumer_key', 'consumer_email' ) ) ? ' autocomplete="off"' : '';
@@ -101,7 +101,7 @@ function rocket_field( $args ) {
 				<?php
 			break;
 
-			case 'checkbox' :
+			case 'checkbox' : 
 				if ( isset( $args['label_screen'] ) ) {
 					?>
 						<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
@@ -391,7 +391,7 @@ function rocket_button( $args ) {
 			echo '<button id="' . $id . '" class="' . $button_style . ' rocketicon rocketicon-'. $class . '">' . wp_kses_post( $button['button_label'] ) . '</button>';
 		}
 		?>
-
+		
 
 		<?php echo apply_filters( 'rocket_help', $desc, sanitize_key( strip_tags( $button['button_label'] ) ), 'description' ); ?>
 		<?php echo apply_filters( 'rocket_help', $help, sanitize_key( strip_tags( $button['button_label'] ) ), 'help' ); ?>
@@ -444,36 +444,36 @@ function rocket_display_options() {
 		'faq',
 		'support'
 	);
-
+	
 	foreach( $modules as $module ) {
 		require( WP_ROCKET_ADMIN_UI_MODULES_PATH . $module . '.php' );
 	}
-
+	
 	$heading_tag = version_compare( $GLOBALS['wp_version'], '4.3' ) >= 0 ? 'h1' : 'h2';
 	?>
-
+	
 	<div class="wrap">
 
 	<<?php echo $heading_tag; ?>><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></<?php echo $heading_tag; ?>>
 	<form action="options.php" id="rocket_options" method="post" enctype="multipart/form-data">
-		<?php
+		<?php 
 		settings_fields( 'wp_rocket' );
-
-		rocket_hidden_fields(
-			array(
-				'consumer_key',
-				'consumer_email',
-				'secret_key',
-				'license',
+		
+		rocket_hidden_fields( 
+			array( 
+				'consumer_key', 
+				'consumer_email', 
+				'secret_key', 
+				'license', 
 				'secret_cache_key',
-				'minify_css_key',
-				'minify_js_key',
-				'version',
-				'cloudflare_old_settings'
+				'minify_css_key', 
+				'minify_js_key', 
+				'version', 
+				'cloudflare_old_settings' 
 			)
-		);
-
-		submit_button();
+		); 
+				
+		submit_button(); 
 		?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) { ?>
@@ -483,8 +483,8 @@ function rocket_display_options() {
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
-				<?php
-				/** This filter is documented in inc/admin/ui/modules/vanrish.php */
+				<?php 
+				/** This filter is documented in inc/admin/ui/modules/vanrish.php */	
 				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
 				<a href="#tab_varnish" class="nav-tab">Varnish</a>
 				<?php } ?>
@@ -514,8 +514,8 @@ function rocket_display_options() {
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
-				<?php
-				/** This filter is documented in inc/admin/ui/modules/vanrish.php */
+				<?php 
+				/** This filter is documented in inc/admin/ui/modules/vanrish.php */	
 				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
 					<div class="rkt-tab" id="tab_varnish">
 						<p class="description varnish_description"><?php _e( 'The following options are for hosting with Varnish cache system.', 'rocket' ); ?><br/>
@@ -743,14 +743,14 @@ function rocket_settings_callback( $inputs ) {
 	} else {
 		$inputs['minify_js_in_footer'] = array();
 	}
-
+	
 	/*
 	 * Option : CloudFlare Domain
 	 */
 	if ( ! empty( $inputs['cloudflare_domain'] ) ) {
 		$inputs['cloudflare_domain'] = trim( $inputs['cloudflare_domain'] );
 		$inputs['cloudflare_domain'] = rocket_remove_url_protocol( $inputs['cloudflare_domain'] );
-		$inputs['cloudflare_domain'] = str_replace( '/' , '', $inputs['cloudflare_domain'] );
+		$inputs['cloudflare_domain'] = str_replace( '/' , '', $inputs['cloudflare_domain'] ); 
 	} else {
 		$inputs['cloudflare_domain'] = '';
 	}
@@ -764,15 +764,15 @@ function rocket_settings_callback( $inputs ) {
 	$inputs['wl_author_URI']  = isset( $inputs['wl_author_URI'] )  ? esc_url( $inputs['wl_author_URI'] )            : get_rocket_option( 'wl_author_URI' );
 	$inputs['wl_description'] = isset( $inputs['wl_description'] ) ? (array)$inputs['wl_description']               : get_rocket_option( 'wl_description' );
 	$inputs['wl_plugin_slug'] = sanitize_key( $inputs['wl_plugin_name'] );
-
+	
 	/*
 	 * Option : CloudFlare
 	 */
-
+	 
 	 if( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
 		 $inputs['cloudflare_api_key'] = get_rocket_option( 'cloudflare_api_key' );
 	 }
-
+	
 	/*
 	 * Option : CDN
 	 */
@@ -808,22 +808,22 @@ function rocket_settings_callback( $inputs ) {
 	} else {
 		$inputs['cdn_reject_files'] = array();
 	}
-
+	
 	/*
 	 * Option: Support
 	 */
-	$fake_options = array(
+	$fake_options = array( 
 		'support_summary',
 		'support_description',
 		'support_documentation_validation'
 	);
-
+	
 	foreach ( $fake_options as $option ) {
 		 if( isset( $inputs[$option] ) ) {
 			 unset($inputs[$option]);
 		 }
 	}
-
+	 
 	if ( isset( $_FILES['import'] )
 		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] ) {
@@ -888,17 +888,17 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
 		return;
 	}
-
+	
 	// This values do not need to clean the cache domain
-	$removed = array(
-		'purge_cron_interval' => true,
-		'purge_cron_unit'     => true,
-		'wl_plugin_name'      => true,
-		'wl_plugin_URI'       => true,
-		'wl_author'           => true,
-		'wl_author_URI'       => true,
-		'wl_description'      => true,
-		'wl_plugin_slug'      => true
+	$removed = array( 
+		'purge_cron_interval' => true, 
+		'purge_cron_unit'     => true, 
+		'wl_plugin_name'      => true, 
+		'wl_plugin_URI'       => true, 
+		'wl_author'           => true, 
+		'wl_author_URI'       => true, 
+		'wl_description'      => true, 
+		'wl_plugin_slug'      => true 
 	);
 
 	// Create 2 arrays to compare
@@ -919,34 +919,34 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'js' );
 	}
-
+		
 	// Update CloudFlare Development Mode
 	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
 		set_rocket_cloudflare_devmode( (bool) $value['cloudflare_devmode'] );
 	}
-
+	
 	// Update CloudFlare settings
-	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_auto_settings'] != $value['cloudflare_auto_settings'] ) ) {
+	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_auto_settings'] != $value['cloudflare_auto_settings'] ) ) {		
 		$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
-
-		// Set Cache Level to Aggressive
+		
+		// Set Cache Level to Aggressive 
 		$cf_cache_lvl = ( isset( $cf_old_settings[0] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[0] : 'agg';
 		set_rocket_cloudflare_cache_lvl( $cf_cache_lvl );
-
+		
 		// Active Minification for HTML, CSS & JS
 		$cf_minify = ( isset( $cf_old_settings[1] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[1] : 7;
 		set_rocket_cloudflare_minify( $cf_minify );
-
+		
 		// Deactivate Rocket Loader to prevent conflicts
 		$cf_async = ( isset( $cf_old_settings[2] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[2] : false;
 		set_rocket_cloudflare_async( $cf_async );
 	}
-
+	
 	// Regenerate advanced-cache.php file
-	if ( ! empty( $_POST ) && isset( $oldvalue['do_caching_mobile_files'] ) && ( $oldvalue['do_caching_mobile_files'] != $value['do_caching_mobile_files'] || $oldvalue['do_caching_mobile_files'] != $value['do_caching_mobile_files'] ) ) {
+	if ( ! empty( $_POST ) && ( $oldvalue['do_caching_mobile_files'] != $value['do_caching_mobile_files'] || $oldvalue['do_caching_mobile_files'] != $value['do_caching_mobile_files'] ) ) {
 		rocket_generate_advanced_cache_file();
 	}
-
+	
 	// Update .htaccess file rules
 	flush_rocket_htaccess( ! rocket_valid_key() );
 
@@ -957,7 +957,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) {
 		set_rocket_wp_cache_define( true );
 	}
-
+	
 	// Redirect on the correct page slug name to avoid false negative error message
 	if ( ! empty( $_POST ) && $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
 		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket' == $_POST['option_page'] && 'update' == $_POST['action'] )
@@ -1017,15 +1017,15 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$cf_settings = get_rocket_cloudflare_settings();
 		$cf_settings = array( $cf_settings->cache_lvl, (int) $cf_settings->minify, ! is_string( $cf_settings->async ) ? (int) $cf_settings->async : $cf_settings->async );
 		$cf_settings = array_filter( $cf_settings );
-
+		
 		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , $cf_settings ) : '';
 	}
-
+	
 	// Checked the SSL option if the whole website is on SSL
 	if( rocket_is_ssl_website() ) {
 		$newvalue['cache_ssl'] = 1;
 	}
-
+		
 	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
