@@ -486,7 +486,7 @@ function rocket_display_options() {
 				<?php 
 				/** This filter is documented in inc/admin/ui/modules/vanrish.php */	
 				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
-				<a href="#tab_varnish" class="nav-tab"><?php _e( 'Varnish', 'rocket' ); ?></a>
+				<a href="#tab_varnish" class="nav-tab">'Varnish</a>
 				<?php } ?>
 				<?php if( defined( 'WP_RWL' ) ) { ?>
 					<a href="#tab_whitelabel" class="nav-tab"><?php _e( 'White Label', 'rocket' ); ?></a>
