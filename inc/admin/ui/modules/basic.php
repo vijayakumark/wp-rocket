@@ -148,7 +148,7 @@ add_settings_field(
 			'type'		   => 'checkbox',
 			'label'		   => __( 'Enable caching for WordPress feeds.', 'rocket' ),
 			'label_for'	   => 'cache_feed',
-			'label_screen' => __( 'Feed cache:', 'rocket' ),
+			'label_screen' => __( 'Feeds cache:', 'rocket' ),
 		)
 	)
 );
@@ -190,7 +190,7 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => __( 'Replace emojis with default WordPress smileys.', 'rocket' ),
 			'label_for'    => 'emoji',
-			'label_screen' => 'Emojis'
+			'label_screen' => __( 'Emojis:', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_description',
