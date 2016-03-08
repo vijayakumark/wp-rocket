@@ -139,7 +139,7 @@ add_settings_field(
 );
 add_settings_field(
 	'rocket_feed',
-	__( 'Feed cache:', 'rocket' ),
+	__( 'Feeds cache:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
