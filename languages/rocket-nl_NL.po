@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2016-03-08 16:25:00+00:00\n"
-"PO-Revision-Date: 2016-03-08 16:24+0000\n"
+"POT-Creation-Date: 2016-03-11 07:07:23+00:00\n"
+"PO-Revision-Date: 2016-03-11 07:06+0000\n"
 "Last-Translator: FX Bénard <fxb@wp-translations.org>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/wp-media/wp-rocket/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -750,9 +750,9 @@ msgstr "Accounte-mailadres CloudFlare"
 
 #: inc/admin/ui/modules/cloudflare.php:37
 msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
-"href=%s\"\">Learn more</a>"
-msgstr "<strong>Opmerking:</strong> waar vind ik mijn CloudFlare API-sleutel? <a href=%s\"\">Meer weten</a>"
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
+" target=\"_blank\">Learn more</a>"
+msgstr ""
 
 #: inc/admin/ui/modules/cloudflare.php:46
 #: inc/admin/ui/modules/cloudflare.php:54
@@ -776,9 +776,9 @@ msgstr "Aan"
 
 #: inc/admin/ui/modules/cloudflare.php:77
 msgid ""
-"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
-"more</a>"
-msgstr "Tijdelijk ontwikkelmodus inschakelen op je website. <a href=%s\"\">Meer weten</a>"
+"Temporarily enter development mode on your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr ""
 
 #: inc/admin/ui/modules/cloudflare.php:83
 #: inc/admin/ui/modules/cloudflare.php:91

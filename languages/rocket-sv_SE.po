@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2016-03-08 16:25:00+00:00\n"
-"PO-Revision-Date: 2016-03-08 16:24+0000\n"
+"POT-Creation-Date: 2016-03-11 07:07:23+00:00\n"
+"PO-Revision-Date: 2016-03-11 07:06+0000\n"
 "Last-Translator: FX Bénard <fxb@wp-translations.org>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/wp-media/wp-rocket/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -750,9 +750,9 @@ msgstr "CloudFlare Epost-konto "
 
 #: inc/admin/ui/modules/cloudflare.php:37
 msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
-"href=%s\"\">Learn more</a>"
-msgstr "<strong>Obs!:</strong> Var hittar jag min CloudFlare API-nyckel? <a href=%s\"\">Läs mer</a>"
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
+" target=\"_blank\">Learn more</a>"
+msgstr ""
 
 #: inc/admin/ui/modules/cloudflare.php:46
 #: inc/admin/ui/modules/cloudflare.php:54
@@ -776,9 +776,9 @@ msgstr "På"
 
 #: inc/admin/ui/modules/cloudflare.php:77
 msgid ""
-"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
-"more</a>"
-msgstr "Ange Tillfälligt underhållsläge på din webbplats. <a href=%s\"\"> Läs mer</a>"
+"Temporarily enter development mode on your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr ""
 
 #: inc/admin/ui/modules/cloudflare.php:83
 #: inc/admin/ui/modules/cloudflare.php:91

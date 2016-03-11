@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2016-03-08 16:25:00+00:00\n"
-"PO-Revision-Date: 2016-03-09 08:42+0000\n"
+"POT-Creation-Date: 2016-03-11 07:07:23+00:00\n"
+"PO-Revision-Date: 2016-03-11 07:25+0000\n"
 "Last-Translator: Pseric Lin <pserics@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/wp-media/wp-rocket/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -749,9 +749,9 @@ msgstr "CloudFlare 帳號"
 
 #: inc/admin/ui/modules/cloudflare.php:37
 msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
-"href=%s\"\">Learn more</a>"
-msgstr "<strong>警告：</strong>如何找到我的 CloudFlare API 金鑰？ <a href=%s\"\">了解更多</a>"
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
+" target=\"_blank\">Learn more</a>"
+msgstr "<strong>注意：</strong>那裡可以找到我的 CloudFlare API 金鑰？<a href=\"%s\" target=\"_blank\">了解更多</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:46
 #: inc/admin/ui/modules/cloudflare.php:54
@@ -775,9 +775,9 @@ msgstr "開啟"
 
 #: inc/admin/ui/modules/cloudflare.php:77
 msgid ""
-"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
-"more</a>"
-msgstr "你的網站暫時進入開發模式。 <a href=%s\"\">了解更多</a>"
+"Temporarily enter development mode on your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr "暫時在你的網站啟用開發模式。<a href=\"%s\" target=\"_blank\">了解更多</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:83
 #: inc/admin/ui/modules/cloudflare.php:91

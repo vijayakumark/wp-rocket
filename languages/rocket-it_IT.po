@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2016-03-08 16:25:00+00:00\n"
-"PO-Revision-Date: 2016-03-10 16:37+0000\n"
+"POT-Creation-Date: 2016-03-11 07:07:23+00:00\n"
+"PO-Revision-Date: 2016-03-11 09:06+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/wp-media/wp-rocket/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -750,9 +750,9 @@ msgstr "Account Email CloudFlare"
 
 #: inc/admin/ui/modules/cloudflare.php:37
 msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
-"href=%s\"\">Learn more</a>"
-msgstr "<strong>Nota:</strong> Dove trovo la mia CloudFlare API key? <a href=%s\"\">Ulteriori informazioni</a>"
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
+" target=\"_blank\">Learn more</a>"
+msgstr "<strong>Nota:</strong> Dove trovo la mia chiave API per CloudFlare? <a href=\"%s\" target=\"_blank\">Per saperne di più</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:46
 #: inc/admin/ui/modules/cloudflare.php:54
@@ -776,9 +776,9 @@ msgstr "Acceso"
 
 #: inc/admin/ui/modules/cloudflare.php:77
 msgid ""
-"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
-"more</a>"
-msgstr "Abilita temporaneamente la modalità sviluppo sul tuo sito. <a href=%s\"\">Ulteriori informazioni</a>"
+"Temporarily enter development mode on your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr "Attiva temporaneamente la modalità sviluppo sul tuo sito. <a href=\"%s\" target=\"_blank\">Per saperne di più</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:83
 #: inc/admin/ui/modules/cloudflare.php:91
