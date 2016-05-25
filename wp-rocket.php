@@ -3,23 +3,23 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.7
-Code Name: Hoth
+Version: 2.8
+Code Name: Ilum
 Author: WP Rocket
-Contributors: Jonathan Buttigieg, Julio Potier
+Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
 Author URI: http://www.wp-rocket.me
 Licence: GPLv2
 
 Text Domain: rocket
 Domain Path: languages
 
-Copyright 2013-2015 WP Rocket
+Copyright 2013-2016 WP Rocket
 */
 
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.7' );
+define( 'WP_ROCKET_VERSION'             , '2.8' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -61,7 +61,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.6.16' );
+    define( 'WP_ROCKET_LASTVERSION', '2.7.4' );
 }
 
 require( WP_ROCKET_INC_PATH	. 'compat.php' );
@@ -109,6 +109,7 @@ function rocket_init()
     require( WP_ROCKET_FUNCTIONS_PATH	. 'minify.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'plugins.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'i18n.php' );
+    require( WP_ROCKET_FUNCTIONS_PATH   . 'background-processing.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'bots.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'htaccess.php' );

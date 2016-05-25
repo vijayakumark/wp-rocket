@@ -39,7 +39,7 @@ add_filter( 'get_image_tag'			, 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'post_thumbnail_html'	, 'rocket_lazyload_images', PHP_INT_MAX );
 function rocket_lazyload_images( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons
-	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
 		return $html;
 	}
 
@@ -68,7 +68,7 @@ function __rocket_lazyload_replace_callback( $matches ) {
 	}
 
 	// TO DO - improve this code with a preg_match - it's ugly!!!!
-	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazysrc=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazyload=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false && strpos( $matches[1] . $matches[3], 'data-srcset=' ) === false ) {
+	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazysrc=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazyload=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false && strpos( $matches[1] . $matches[3], 'data-srcset=' ) === false && strpos( $matches[1] . $matches[3], 'class="ls-l' ) === false && strpos( $matches[1] . $matches[3], 'class="ls-bg' ) === false ) {
 		
 		/**
 		 * Filter the LazyLoad placeholder on src attribute
@@ -239,6 +239,11 @@ function rocket_lazyload_iframes( $html ) {
 		if ( strpos( $iframe, 'gform_ajax_frame' ) ) {
 			continue;
 		}
+
+        // Don't lazyload if iframe has data-no-lazy attribute
+		if ( strpos( $iframe, 'data-no-lazy=' ) ) {
+			continue;
+		}
 		
 		/** This filter is documented in inc/front/lazyload.php */
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
@@ -279,12 +284,20 @@ function __rocket_deactivate_lazyload_on_specific_posts() {
 /**
  * Compatibility with images with srcset attribute
  *
+ * @author Remy Perona
+ *
+ * @since 2.8 Also add sizes to the data-lazy-* attributes to prevent error in W3C validator
  * @since 2.7
+ *
  */
 add_filter( 'rocket_lazyload_html', '__rocket_lazyload_on_srcset' );
 function __rocket_lazyload_on_srcset( $html ) {
 	if( preg_match( '/srcset=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
 		$html = str_replace( 'srcset=', 'data-lazy-srcset=', $html );
+	}
+
+    if( preg_match( '/sizes=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
+		$html = str_replace( 'sizes=', 'data-lazy-sizes=', $html );
 	}
 	
 	return $html;

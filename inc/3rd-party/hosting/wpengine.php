@@ -24,7 +24,7 @@ add_action( 'admin_init', '__rocket_run_rocket_bot_after_wpengine' );
 function __rocket_run_rocket_bot_after_wpengine() {
 	if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
 		// Preload cache
-		run_rocket_bot( 'cache-preload' );
+		run_rocket_preload_cache( 'cache-preload' );
 	}
 }
 
@@ -38,9 +38,15 @@ function __rocket_run_rocket_bot_after_wpengine() {
  */
 add_filter( 'get_rocket_option_cdn', '__rocket_auto_activate_cdn_on_wpengine' );
 function __rocket_auto_activate_cdn_on_wpengine( $value ) {
-	$wpengine = WpeCommon::instance();
+    $is_ssl = @$_SERVER['HTTPS'];
+    if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
+        $is_ssl = false;  // have seen this!
+    }
+
+	$wpengine   = WpeCommon::instance();
+	$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
 	
-	if ( $wpengine->is_cdn_enabled() ) {
+	if ( ! empty( $cdn_domain ) ) {
 		$value = true;
 	}
 	
@@ -66,7 +72,10 @@ function __rocket_add_wpengine_cdn_cnames( $hosts ) {
 	
 	$wpengine = WpeCommon::instance();
 	$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
-	$hosts[]    = $native_schema . '://' . $cdn_domain;
+
+	if ( ! empty( $cdn_domain ) ) {
+		$hosts[] = $native_schema . '://' . $cdn_domain;
+	}
 	
 	return $hosts;
 }

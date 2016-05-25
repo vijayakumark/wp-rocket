@@ -66,6 +66,7 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 2.8   Only add post type archive if post type is not post
  * @since 2.6 	Purge the page defined in "Posts page" option
  * @since 2.5.5 Don't cache for auto-draft post status
  * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
@@ -100,7 +101,7 @@ function rocket_clean_post( $post_id ) {
 	$lang = false;
 
 	// WPML
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
 
 	// Polylang
@@ -120,15 +121,16 @@ function rocket_clean_post( $post_id ) {
 	}
 	
 	// Add Posts page
-	if( $post->post_type == 'post' && (int) get_option( 'page_for_posts' ) > 0 ) {
+	if( 'post' == $post->post_type && (int) get_option( 'page_for_posts' ) > 0 ) {
 		array_push( $purge_urls, get_permalink( get_option( 'page_for_posts' ) ) );
 	}
 	
 	// Add Post Type archive
-	$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
-	if ( $post_type_archive ) {
-		array_push( $purge_urls, $post_type_archive );
-	}
+	if ( 'post' !== $post->post_type ) {
+	    if ( $post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) ) ) {
+	    	array_push( $purge_urls, $post_type_archive );
+	    }
+    }
 
 	// Add next post
 	$next_post = get_adjacent_post( false, '', false );
@@ -337,7 +339,7 @@ add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 function do_rocket_bot_cache_json() {
 	global $do_rocket_bot_cache_json;
 	if ( $do_rocket_bot_cache_json ) {
-		run_rocket_bot( 'cache-json' );
+    	run_rocket_preload_cache( 'cache-json', false );
 	}
 }
 
@@ -401,7 +403,14 @@ function __rocket_purge_cache() {
 			
 			// Clear cache file of the current page in front-end
 			case 'url':
-				rocket_clean_files( wp_get_referer() );
+			    $referer = wp_get_referer();
+
+			    if ( 0 !== strpos( $referer, 'http' ) ) {
+    			    list( $host, $path, $scheme, $query ) = get_rocket_parse_url( untrailingslashit( home_url() ) );
+                    $referer = $scheme . '://' . $host . $referer;
+                }
+			    
+				rocket_clean_files( $referer );
 				break;
 
 			default:
@@ -453,6 +462,10 @@ function __rocket_preload_cache() {
 		$lang = isset( $_GET['lang'] ) && $_GET['lang'] != 'all' ? sanitize_key( $_GET['lang'] ) : '';
 		run_rocket_bot( 'cache-preload', $lang );
 
+        if ( get_rocket_option( 'sitemap_preload' ) ) {
+            run_rocket_sitemap_preload();
+        }
+
         wp_redirect( wp_get_referer() );
         die();
     }
@@ -474,4 +487,21 @@ function __admin_post_rocket_purge_cloudflare() {
 
 	wp_redirect( wp_get_referer() );
 	die();
+}
+
+/**
+ * Sitemap preload with async request
+ *
+ * @since 2.8
+ * @author Remy Perona
+ **/
+add_action( 'wp_ajax_rocket_preload_sitemap', '_do_admin_post_rocket_preload_sitemap' );
+function _do_admin_post_rocket_preload_sitemap() {
+	if ( isset( $_POST['_ajax_nonce'], $_POST['sitemap_url'], $_POST['sitemap_id'] )
+		&& check_ajax_referer( 'preload_sitemap-' . $_POST['sitemap_id'] )
+	) {		
+		rocket_process_sitemap( $_POST['sitemap_url'] );
+
+		die( 1 );
+	}
 }
