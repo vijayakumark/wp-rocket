@@ -108,8 +108,6 @@ function rocket_first_install() {
 			'minify_js_legacy'			  => 0,
 			'minify_google_fonts'         => 0,
 			'minify_html'                 => 0,
-			'minify_html_inline_css'      => 0,
-			'minify_html_inline_js'       => 0,
 			'manual_preload'              => 0,
 			'automatic_preload'           => 0,
 			'sitemap_preload'             => 0,
